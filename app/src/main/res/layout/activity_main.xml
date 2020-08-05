@@ -29,5 +29,16 @@
         android:layout_marginEnd="85dp"
         android:text="Dodaj produkt" />
 
+    <Button
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addProduct"
+        android:layout_alignEnd="@+id/addProduct"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="41dp"
+        android:onClick="addCalories"
+        android:text="Dodaj 110 kcal" />
+
 
 </RelativeLayout>

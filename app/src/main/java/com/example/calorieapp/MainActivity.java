@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -21,7 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     PieChart piechart;
     Button addPoductButton;
-    int caloriesCountPerDay =0;
+    private  final int maxCountCalories = 5000;
+   // int caloriesCountPerDay =0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +32,18 @@ public class MainActivity extends AppCompatActivity {
 
         initiallizePieView();
         onAddProductButtonClick();
+    }
 
+    public void addCalories(View view)
+    {
+        CaloriesChange.addCalories(110);
+        initiallizePieView();
+        runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+            piechart.invalidate();
+        }
+    });
     }
 
     private void onAddProductButtonClick()
@@ -54,21 +65,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void initiallizePieView()
     {
-
-        piechart.setRotationEnabled(true);
-        //piechart.setHoleRadius(24f);
         List<PieEntry> valueOfCalories = new ArrayList<>();
-        valueOfCalories.add(new PieEntry(346, "A"));
-        valueOfCalories.add(new PieEntry(900, "B"));
+        valueOfCalories.add(new PieEntry(CaloriesChange.getCountCalories(), "A"));
+        valueOfCalories.add(new PieEntry(maxCountCalories - CaloriesChange.getCountCalories(), "B"));
 
         PieDataSet pieDataSet =new PieDataSet(valueOfCalories, "Calories");
         PieData pieData = new PieData(pieDataSet);
         pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         piechart.setData(pieData);
 
-        piechart.setCenterText("dzisiaj " + caloriesCountPerDay + " kcal");
+        piechart.setCenterText("dzisiaj \n " + CaloriesChange.getCountCalories() + " kcal"); //caloriesCountPerDay
         piechart.setCenterTextSize(20);
         piechart.getDescription().setEnabled(false);
+        piechart.setHoleRadius(80);
+        piechart.setRotationEnabled(true);
         piechart.setDrawEntryLabels(false); //usuwa opis na wykresie
         piechart.getLegend().setEnabled(false); //usuwa legende
         piechart.setTouchEnabled(false); // blokuje krazenie grafu
