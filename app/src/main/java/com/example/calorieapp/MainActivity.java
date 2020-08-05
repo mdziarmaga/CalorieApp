@@ -68,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
         piechart.setCenterText("dzisiaj " + caloriesCountPerDay + " kcal");
         piechart.setCenterTextSize(20);
-        piechart.setDescription(null);
+        piechart.getDescription().setEnabled(false);
+        piechart.setDrawEntryLabels(false); //usuwa opis na wykresie
+        piechart.getLegend().setEnabled(false); //usuwa legende
+        piechart.setTouchEnabled(false); // blokuje krazenie grafu
     }
 }
