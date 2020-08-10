@@ -9,17 +9,17 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class CategoriesActivity extends AppCompatActivity {
+public class HistoryActivity extends AppCompatActivity {
 
     BottomNavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_categories);
+        setContentView(R.layout.activity_history);
 
         navigationView = findViewById(R.id.navigation);
-        navigationView.setSelectedItemId(R.id.menu_addProduct);
+        navigationView.setSelectedItemId(R.id.menu_history);
         navigationView.setOnNavigationItemSelectedListener(navigationListener);
     }
 
@@ -30,15 +30,13 @@ public class CategoriesActivity extends AppCompatActivity {
                     switch(menuItem.getItemId())
                     {
                         case R.id.menu_addProduct:
-                            return true;
-                        case R.id.menu_history:
-                            openHistoryPage();
-                            //startActivity(new Intent(getApplicationContext(),HistoryActivity.class));
+                            openCategoriesActivity();
                             overridePendingTransition(0,0);
                             return true;
+                        case R.id.menu_history:
+                            return true;
                         case R.id.menu_homePage:
-                            openHomePage();
-                            //startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                             openHomePage();
                             overridePendingTransition(0,0);
                             return true;
                     }
@@ -46,9 +44,9 @@ public class CategoriesActivity extends AppCompatActivity {
                 }
             };
 
-    private void openHistoryPage()
+    private void openCategoriesActivity()
     {
-        Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+        Intent intent = new Intent(getApplicationContext(), CategoriesActivity.class);
         startActivity(intent);
     }
 
@@ -57,4 +55,5 @@ public class CategoriesActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
+
 }

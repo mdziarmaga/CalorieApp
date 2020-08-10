@@ -1,9 +1,14 @@
 package com.example.calorieapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -12,7 +17,9 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.FileDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
     PieChart piechart;
     Button addPoductButton;
     private  final int maxCountCalories = 5000;
-   // int caloriesCountPerDay =0;
+    BottomNavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,21 +37,46 @@ public class MainActivity extends AppCompatActivity {
         setTitle("Calories counter");
 
         piechart = findViewById(R.id.pieView);
+        navigationView = findViewById(R.id.navigation);
 
         initiallizePieView();
         onAddProductButtonClick();
+
+        navigationView.setSelectedItemId(R.id.menu_homePage);
+        navigationView.setOnNavigationItemSelectedListener(navigationListener);
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navigationListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            switch(menuItem.getItemId())
+            {
+                case R.id.menu_addProduct:
+                    openCategoriesActivity();
+                    overridePendingTransition(0,0);
+                    return true;
+                case R.id.menu_history:
+                    openHistoryPage();
+                    overridePendingTransition(0,0);
+                    return true;
+                case R.id.menu_homePage:
+                    return true;
+            }
+            return false;
+        }
+    };
 
     public void addCalories(View view)
     {
         CaloriesChange.addCalories(110);
         initiallizePieView();
         runOnUiThread(new Runnable() {
-        @Override
-        public void run() {
-            piechart.invalidate();
-        }
-    });
+            @Override
+            public void run() {
+                    piechart.invalidate();
+                }
+            });
     }
 
     private void onAddProductButtonClick()
@@ -59,7 +92,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void openCategoriesActivity()
     {
-        Intent intent = new Intent(this, CategoriesActivity.class);
+        Intent intent = new Intent(getApplicationContext(), CategoriesActivity.class);
+
+        startActivity(intent);
+    }
+
+    private void openHistoryPage()
+    {
+        Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
         startActivity(intent);
     }
 
