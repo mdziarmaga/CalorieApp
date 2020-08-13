@@ -46,10 +46,27 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/addProduct"
         android:layout_alignEnd="@+id/addProduct"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="41dp"
+        android:layout_marginTop="-9dp"
+        android:layout_marginEnd="132dp"
         android:onClick="addCalories"
         android:text="Dodaj 110 kcal" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_product"
+        style="@style/Widget.MaterialComponents.Chip.Choice"
+        android:layout_width="200dp"
+        android:layout_height="55dp"
+        android:layout_above="@+id/navigation"
+
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="127dp"
+        android:layout_marginEnd="114dp"
+        android:layout_marginBottom="27dp"
+        android:text="Dzisiejsze produkty"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>
