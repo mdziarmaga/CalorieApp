@@ -10,11 +10,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.renderscript.Sampler;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.calorieapp.ApiConnection.apiMethodsController;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
@@ -25,9 +27,11 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 
+import org.json.JSONException;
 import org.w3c.dom.Text;
 
 import java.io.FileDescriptor;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        StrictMode.ThreadPolicy policy = new
+                StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -54,6 +61,13 @@ public class MainActivity extends AppCompatActivity {
         onChipClick();
         navigationView.setSelectedItemId(R.id.menu_homePage);
         navigationView.setOnNavigationItemSelectedListener(navigationListener);
+        try {
+            apiConnectionExample();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onChipClick()
@@ -151,5 +165,12 @@ public class MainActivity extends AppCompatActivity {
         piechart.setDrawEntryLabels(false); //usuwa opis na wykresie
         piechart.getLegend().setEnabled(false); //usuwa legende
         piechart.setTouchEnabled(false); // blokuje krazenie grafu
+    }
+    private void apiConnectionExample() throws IOException, JSONException {
+        //getFood zwraca produkt o dokładnie takiej samej nazwie jak param jeżeli takie istnieje w bazie
+        System.out.println(new apiMethodsController().getFood("apple"));
+        //getHints zwraca produkty których nazwa zawiera param
+        // Zawiera też produkt z dokładnym dopasowaniem
+        System.out.println(new apiMethodsController().getHints("apple"));
     }
 }
