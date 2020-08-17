@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.calorieapp.ApiConnection.apiMethodsController;
+import com.example.calorieapp.SearchPage.SearchActivity;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
@@ -127,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openCategoriesActivity()
     {
-        Intent intent = new Intent(getApplicationContext(), CategoriesActivity.class);
+        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
 
         startActivity(intent);
     }

@@ -12,7 +12,9 @@
         <activity android:name=".DetailProductActivity"></activity>
         <activity android:name=".HistoryActivity" />
         <activity android:name=".CategoriesActivity" />
+        <activity android:name=".SearchPage.SearchActivity" />
         <activity android:name=".MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
