@@ -4,12 +4,15 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -58,6 +61,22 @@ public class SearchActivity extends AppCompatActivity  {
         text.setText(food.getLabel());
         ImageView productImage = (ImageView) dialog.findViewById(R.id.foodView);
         Picasso.get().load(food.getImage()).into(productImage);
+        EditText editText = dialog.findViewById(R.id.editText);
+        final Editable textt = editText.getText();
+        Button positiveButton = dialog.findViewById(R.id.positiveButton);
+        Button negativeButton = dialog.findViewById(R.id.negativeButton);
+        positiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //button Dodaj
+            }
+        });
+        negativeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            //button Anuluj
+            }
+        });
         dialog.show();
     }
 

@@ -64,12 +64,10 @@ public class Nutrients {
 
     @Override
     public String toString() {
-        return "Nutrients{" +
-                "eNERCKCAL=" + eNERCKCAL +
-                ", pROCNT=" + pROCNT +
-                ", fAT=" + fAT +
-                ", cHOCDF=" + cHOCDF +
-                ", fIBTG=" + fIBTG +
-                '}';
+        return "\n"+"Energy=" + (double)(Math.round(eNERCKCAL*100))/100 +"\n"+
+                " Protein=" + (double)(Math.round(pROCNT*100))/100 +"\n"+
+                " Fat=" +  (double)(Math.round(fAT*100))/100 +"\n"+
+                " Carbs=" +  (double)(Math.round(cHOCDF*100))/100 +"\n"+
+                " Fiber =" +  (double)(Math.round(fIBTG*100))/100 ;
     }
 }
