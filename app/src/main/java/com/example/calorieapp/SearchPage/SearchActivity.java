@@ -1,7 +1,9 @@
 package com.example.calorieapp.SearchPage;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
@@ -17,12 +19,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.calorieapp.ApiConnection.apiMethodsController;
 import com.example.calorieapp.Entities.Food_;
+import com.example.calorieapp.MainActivity;
 import com.example.calorieapp.R;
 import com.squareup.picasso.Picasso;
 
@@ -36,7 +40,7 @@ public class SearchActivity extends AppCompatActivity  {
     ListViewAdopter adapter;
     LayoutInflater inflater;
     //  public final Activity activity;
-
+    Dialog dialog;
     public static  Context context = null;
 
 
@@ -54,30 +58,53 @@ public class SearchActivity extends AppCompatActivity  {
 
     public void openAddDialog(Food_ food, View view)
     {
-        Dialog dialog = new Dialog(context);
+        dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.activity_dialog);
         TextView text = (TextView) dialog.findViewById(R.id.nameView);
         text.setText(food.getLabel());
         ImageView productImage = (ImageView) dialog.findViewById(R.id.foodView);
         Picasso.get().load(food.getImage()).into(productImage);
-        EditText editText = dialog.findViewById(R.id.editText);
+        final EditText editText = dialog.findViewById(R.id.editText);
         final Editable textt = editText.getText();
         Button positiveButton = dialog.findViewById(R.id.positiveButton);
         Button negativeButton = dialog.findViewById(R.id.negativeButton);
         positiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //button Dodaj
+                if(!textt.toString().isEmpty())
+                {
+                    alertShow("Produkt został dodany", null, "Ok");
+                    dialog.dismiss();
+                }
+                else
+                {
+                    alertShow("Wprowadź poprawne dane", "Błąd", "Ok");
+                }
+
             }
         });
         negativeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //button Anuluj
+                dialog.cancel();
             }
         });
         dialog.show();
+    }
+
+    private void alertShow(String text, String title, String buttonOption){
+        AlertDialog.Builder alert = new AlertDialog.Builder(dialog.getContext());
+        alert.setMessage(text);
+        alert.setTitle(title);
+        alert.setPositiveButton(buttonOption, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.create();
+        alert.show();
     }
 
     @Override

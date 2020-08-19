@@ -8,19 +8,19 @@ public class Nutrients_ {
 
     @SerializedName("ENERC_KCAL")
     @Expose
-    private Double eNERCKCAL;
+    private Double eNERCKCAL = 0.0;
     @SerializedName("PROCNT")
     @Expose
-    private Double pROCNT;
+    private Double pROCNT = 0.0;
     @SerializedName("FAT")
     @Expose
-    private Double fAT;
+    private Double fAT = 0.0;
     @SerializedName("CHOCDF")
     @Expose
-    private Double cHOCDF;
+    private Double cHOCDF = 0.0;
     @SerializedName("FIBTG")
     @Expose
-    private Double fIBTG;
+    private Double fIBTG = 0.0;
 
     public Double getENERCKCAL() {
         return eNERCKCAL;
