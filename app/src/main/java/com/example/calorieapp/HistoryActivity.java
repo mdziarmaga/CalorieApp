@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.calorieapp.SearchPage.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HistoryActivity extends AppCompatActivity {
@@ -30,7 +31,7 @@ public class HistoryActivity extends AppCompatActivity {
                     switch(menuItem.getItemId())
                     {
                         case R.id.menu_addProduct:
-                            openCategoriesActivity();
+                            openSearchActivity();
                             overridePendingTransition(0,0);
                             return true;
                         case R.id.menu_history:
@@ -44,9 +45,9 @@ public class HistoryActivity extends AppCompatActivity {
                 }
             };
 
-    private void openCategoriesActivity()
+    private void openSearchActivity()
     {
-        Intent intent = new Intent(getApplicationContext(), CategoriesActivity.class);
+        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
         startActivity(intent);
     }
 

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/mainView"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
@@ -40,16 +41,16 @@
         android:layout_marginEnd="83dp"
         android:text="Dodaj produkt" />
 
-    <Button
-        android:id="@+id/add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/addProduct"
-        android:layout_alignEnd="@+id/addProduct"
-        android:layout_marginTop="-9dp"
-        android:layout_marginEnd="132dp"
-        android:onClick="addCalories"
-        android:text="Dodaj 110 kcal" />
+<!--    <Button-->
+<!--        android:id="@+id/add"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/addProduct"-->
+<!--        android:layout_alignEnd="@+id/addProduct"-->
+<!--        android:layout_marginTop="-9dp"-->
+<!--        android:layout_marginEnd="132dp"-->
+<!--        android:onClick="addCalories"-->
+<!--        android:text="Dodaj 110 kcal" />-->
 
     <com.google.android.material.chip.Chip
         android:id="@+id/chip_product"

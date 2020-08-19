@@ -5,16 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.slice.Slice;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.renderscript.Sampler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.example.calorieapp.ApiConnection.apiMethodsController;
 import com.example.calorieapp.SearchPage.SearchActivity;
@@ -33,6 +37,7 @@ import org.w3c.dom.Text;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,11 +48,13 @@ public class MainActivity extends AppCompatActivity {
     Chip productChip;
     private  final int maxCountCalories = 5000;
     BottomNavigationView navigationView;
+    int countOfCalories;
+
+    RelativeLayout mainView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        StrictMode.ThreadPolicy policy = new
-                StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -56,8 +63,24 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigation);
         productChip = findViewById(R.id.chip_product);
 
+        mainView = findViewById(R.id.mainView);
+
+
+//
+//        int count =0;
+//        int contInt ;
+//        String countStr;
+//
+//        if(getIntent().getExtras() != null) {
+//            countStr= getIntent().getStringExtra("calories");
+//            contInt=  Integer.parseInt(countStr);
+//            CaloriesChange.addCalories(contInt);
+//            piechart.invalidate();
+//        }
+
 
         initiallizePieView();
+
         onAddProductButtonClick();
         onChipClick();
         navigationView.setSelectedItemId(R.id.menu_homePage);
@@ -70,6 +93,19 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+//    public void init()
+//    {
+//        initiallizePieView();
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//               // piechart.notifyDataSetChanged();
+//                piechart.invalidate();
+//            }
+//        });
+//    }
 
     public void onChipClick()
     {
@@ -103,17 +139,18 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public void addCalories(View view)
-    {
-        CaloriesChange.addCalories(110);
-        initiallizePieView();
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                    piechart.invalidate();
-                }
-            });
-    }
+//    public void addCalories(View view)
+//    {
+//        CaloriesChange.addCalories(110);
+//        initiallizePieView();
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                    piechart.invalidate();
+//                }
+//            });
+//
+//    }
 
     private void onAddProductButtonClick()
     {
@@ -129,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
     private void openCategoriesActivity()
     {
         Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-
         startActivity(intent);
     }
 
@@ -141,23 +177,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void initiallizePieView()
     {
+        piechart.notifyDataSetChanged();
         List<PieEntry> valueOfCalories = new ArrayList<>();
         valueOfCalories.add(new PieEntry(CaloriesChange.getCountCalories(), "A"));
         valueOfCalories.add(new PieEntry(maxCountCalories - CaloriesChange.getCountCalories(), "B"));
        // valueOfCalories.add(new Slice(15, "ss"));
        // valueOfCalories.add(new );
 
-
         PieDataSet pieDataSet =new PieDataSet(valueOfCalories, "Calories");
-
         PieData pieData = new PieData(pieDataSet);
-
         pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
 
         piechart.setData(pieData);
-
-
-
         piechart.setCenterText("dzisiaj \n " + CaloriesChange.getCountCalories() + " kcal"); //caloriesCountPerDay
         piechart.setCenterTextSize(20);
         piechart.getDescription().setEnabled(false);
@@ -166,7 +197,10 @@ public class MainActivity extends AppCompatActivity {
         piechart.setDrawEntryLabels(false); //usuwa opis na wykresie
         piechart.getLegend().setEnabled(false); //usuwa legende
         piechart.setTouchEnabled(false); // blokuje krazenie grafu
+
+        piechart.invalidate();
     }
+
     private void apiConnectionExample() throws IOException, JSONException {
         //getFood zwraca produkt o dokładnie takiej samej nazwie jak param jeżeli takie istnieje w bazie
         System.out.println(new apiMethodsController().getFood("apple"));

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,13 +23,18 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.calorieapp.ApiConnection.apiMethodsController;
+import com.example.calorieapp.CaloriesChange;
+import com.example.calorieapp.CategoriesActivity;
 import com.example.calorieapp.Entities.Food_;
+import com.example.calorieapp.HistoryActivity;
 import com.example.calorieapp.MainActivity;
 import com.example.calorieapp.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -39,9 +46,9 @@ public class SearchActivity extends AppCompatActivity  {
     ListView listView;
     ListViewAdopter adapter;
     LayoutInflater inflater;
-    //  public final Activity activity;
     Dialog dialog;
     public static  Context context = null;
+    BottomNavigationView navigationView;
 
 
 
@@ -54,6 +61,43 @@ public class SearchActivity extends AppCompatActivity  {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Products List");
 
+        navigationView = findViewById(R.id.navigation);
+        navigationView.setSelectedItemId(R.id.menu_addProduct);
+        navigationView.setOnNavigationItemSelectedListener(navigationListener);
+
+    }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navigationListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    switch(menuItem.getItemId())
+                    {
+                        case R.id.menu_addProduct:
+                            return true;
+                        case R.id.menu_history:
+                            openHistoryActivity();
+                            overridePendingTransition(0,0);
+                            return true;
+                        case R.id.menu_homePage:
+                            openHomePage();
+                            overridePendingTransition(0,0);
+                            return true;
+                    }
+                    return false;
+                }
+            };
+
+    private void openHistoryActivity()
+    {
+        Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+        startActivity(intent);
+    }
+
+    private void openHomePage()
+    {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 
     public void openAddDialog(Food_ food, View view)
@@ -74,8 +118,22 @@ public class SearchActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 if(!textt.toString().isEmpty())
                 {
+                    int countCaloriesOfProduct = Integer.parseInt(editText.getText().toString());
+                    CaloriesChange.addCalories(countCaloriesOfProduct);
+
                     alertShow("Produkt został dodany", null, "Ok");
                     dialog.dismiss();
+
+//                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//
+//                    startActivity(intent);
+//                    finish();
+
+                    //finish();
+//                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                    intent.putExtra("calories", countCaloriesOfProduct);
+//                    startActivity(intent);
+
                 }
                 else
                 {
