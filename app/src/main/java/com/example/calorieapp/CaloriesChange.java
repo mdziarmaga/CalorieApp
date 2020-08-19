@@ -1,13 +1,13 @@
 package com.example.calorieapp;
 
 public class CaloriesChange {
-    public static int countCalories = 0;
+    public static float countCalories = 0;
 
-    public static int getCountCalories() {
+    public static float getCountCalories() {
         return countCalories;
     }
 
-    public static int addCalories(int calories )
+    public static float addCalories(float calories )
     {
         countCalories += calories;
         return countCalories;

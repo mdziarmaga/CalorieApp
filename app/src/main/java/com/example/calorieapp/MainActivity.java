@@ -46,11 +46,9 @@ public class MainActivity extends AppCompatActivity {
     PieChart piechart;
     Button addPoductButton;
     Chip productChip;
-    private  final int maxCountCalories = 5000;
+//    private  final int maxCountCalories = 5000;
+    private  final float maxCountCalories = 5000;
     BottomNavigationView navigationView;
-    int countOfCalories;
-
-    RelativeLayout mainView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,21 +60,6 @@ public class MainActivity extends AppCompatActivity {
         piechart = findViewById(R.id.pieView);
         navigationView = findViewById(R.id.navigation);
         productChip = findViewById(R.id.chip_product);
-
-        mainView = findViewById(R.id.mainView);
-
-
-//
-//        int count =0;
-//        int contInt ;
-//        String countStr;
-//
-//        if(getIntent().getExtras() != null) {
-//            countStr= getIntent().getStringExtra("calories");
-//            contInt=  Integer.parseInt(countStr);
-//            CaloriesChange.addCalories(contInt);
-//            piechart.invalidate();
-//        }
 
 
         initiallizePieView();
@@ -179,8 +162,8 @@ public class MainActivity extends AppCompatActivity {
     {
         piechart.notifyDataSetChanged();
         List<PieEntry> valueOfCalories = new ArrayList<>();
-        valueOfCalories.add(new PieEntry(CaloriesChange.getCountCalories(), "A"));
-        valueOfCalories.add(new PieEntry(maxCountCalories - CaloriesChange.getCountCalories(), "B"));
+        valueOfCalories.add(new PieEntry(  CaloriesChange.getCountCalories()));
+        valueOfCalories.add(new PieEntry(maxCountCalories - CaloriesChange.getCountCalories()));
        // valueOfCalories.add(new Slice(15, "ss"));
        // valueOfCalories.add(new );
 
@@ -189,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
 
         piechart.setData(pieData);
-        piechart.setCenterText("dzisiaj \n " + CaloriesChange.getCountCalories() + " kcal"); //caloriesCountPerDay
+        piechart.setCenterText(Math.round(CaloriesChange.getCountCalories()) + "\nkcal "); //caloriesCountPerDay
         piechart.setCenterTextSize(20);
         piechart.getDescription().setEnabled(false);
         piechart.setHoleRadius(80);

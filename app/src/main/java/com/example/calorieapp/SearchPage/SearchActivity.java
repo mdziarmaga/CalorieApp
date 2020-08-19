@@ -30,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.calorieapp.ApiConnection.apiMethodsController;
 import com.example.calorieapp.CaloriesChange;
 import com.example.calorieapp.CategoriesActivity;
+//import com.example.calorieapp.DataBase.DataBaseHelper;
 import com.example.calorieapp.Entities.Food_;
 import com.example.calorieapp.HistoryActivity;
 import com.example.calorieapp.MainActivity;
@@ -49,6 +50,7 @@ public class SearchActivity extends AppCompatActivity  {
     Dialog dialog;
     public static  Context context = null;
     BottomNavigationView navigationView;
+  //  DataBaseHelper dataBaseHelper;
 
 
 
@@ -100,7 +102,7 @@ public class SearchActivity extends AppCompatActivity  {
         startActivity(intent);
     }
 
-    public void openAddDialog(Food_ food, View view)
+    public void openAddDialog(final Food_ food, View view)
     {
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -109,6 +111,7 @@ public class SearchActivity extends AppCompatActivity  {
         text.setText(food.getLabel());
         ImageView productImage = (ImageView) dialog.findViewById(R.id.foodView);
         Picasso.get().load(food.getImage()).into(productImage);
+
         final EditText editText = dialog.findViewById(R.id.editText);
         final Editable textt = editText.getText();
         Button positiveButton = dialog.findViewById(R.id.positiveButton);
@@ -118,11 +121,22 @@ public class SearchActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 if(!textt.toString().isEmpty())
                 {
-                    int countCaloriesOfProduct = Integer.parseInt(editText.getText().toString());
-                    CaloriesChange.addCalories(countCaloriesOfProduct);
+                    float countCaloriesOfProduct = Integer.parseInt(editText.getText().toString());
+
+//
+                    double caloriesOfProductDouble = food.getNutrients().getENERCKCAL();
+                    float caloriesOfProductInt = (float) caloriesOfProductDouble;
+
+                    float sumCalories = countCaloriesOfProduct * (caloriesOfProductInt/1000);
+                    CaloriesChange.addCalories(sumCalories);
 
                     alertShow("Produkt został dodany", null, "Ok");
                     dialog.dismiss();
+
+                    //polacznei z bd//
+
+//                    dataBaseHelper = new DataBaseHelper(SearchActivity.this);
+//                    dataBaseHelper.addData(); //clas
 
 //                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 //
@@ -150,6 +164,23 @@ public class SearchActivity extends AppCompatActivity  {
         });
         dialog.show();
     }
+
+//    public void AddData()
+//    {
+//        boolean insertData = dataBaseHelper.addData();
+//        if(insertData)
+//        {
+//            toastMessage("Dane wprowadzone poprawnie");
+//        }
+//        else{
+//            toastMessage("Wystąpił błąd");
+//        }
+//    }
+
+//    private void toastMessage(String message)
+//    {
+//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+//    }
 
     private void alertShow(String text, String title, String buttonOption){
         AlertDialog.Builder alert = new AlertDialog.Builder(dialog.getContext());
