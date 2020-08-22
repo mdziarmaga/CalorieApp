@@ -5,10 +5,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,7 +32,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.calorieapp.ApiConnection.apiMethodsController;
 import com.example.calorieapp.CaloriesChange;
 import com.example.calorieapp.CategoriesActivity;
-//import com.example.calorieapp.DataBase.DataBaseHelper;
+import com.example.calorieapp.DataBase.DataBaseHelper;
+import com.example.calorieapp.DataBase.ViewModel;
 import com.example.calorieapp.Entities.Food_;
 import com.example.calorieapp.HistoryActivity;
 import com.example.calorieapp.MainActivity;
@@ -50,8 +53,11 @@ public class SearchActivity extends AppCompatActivity  {
     Dialog dialog;
     public static  Context context = null;
     BottomNavigationView navigationView;
-  //  DataBaseHelper dataBaseHelper;
+    DataBaseHelper dataBaseHelper;
+    MainActivity m = new MainActivity();
+    ViewModel viewModel;
 
+    private static final String TAG ="SearcActivity";
 
 
     @Override
@@ -102,6 +108,12 @@ public class SearchActivity extends AppCompatActivity  {
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+
+        super.onBackPressed();
+    }
+
     public void openAddDialog(final Food_ food, View view)
     {
         dialog = new Dialog(context);
@@ -121,39 +133,27 @@ public class SearchActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 if(!textt.toString().isEmpty())
                 {
-                    float countCaloriesOfProduct = Integer.parseInt(editText.getText().toString());
-
-//
+                    int countCaloriesOfProduct = Integer.parseInt(editText.getText().toString());
                     double caloriesOfProductDouble = food.getNutrients().getENERCKCAL();
                     float caloriesOfProductInt = (float) caloriesOfProductDouble;
-
                     float sumCalories = countCaloriesOfProduct * (caloriesOfProductInt/1000);
                     CaloriesChange.addCalories(sumCalories);
+                  //  m.initiallizePieView();
+
+                    //tworzenie modeu do bazy danych
+                   viewModel = new ViewModel( -1 ,food.getLabel() , food.getNutrients().getENERCKCAL(), countCaloriesOfProduct, sumCalories );
+
+//                    dataBaseHelper = new DataBaseHelper(context);
+//                    boolean success = dataBaseHelper.addData(viewModel);
+                    addToDataBase();
 
                     alertShow("Produkt został dodany", null, "Ok");
                     dialog.dismiss();
-
-                    //polacznei z bd//
-
-//                    dataBaseHelper = new DataBaseHelper(SearchActivity.this);
-//                    dataBaseHelper.addData(); //clas
-
-//                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//
-//                    startActivity(intent);
-//                    finish();
-
-                    //finish();
-//                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                    intent.putExtra("calories", countCaloriesOfProduct);
-//                    startActivity(intent);
-
                 }
                 else
                 {
                     alertShow("Wprowadź poprawne dane", "Błąd", "Ok");
                 }
-
             }
         });
         negativeButton.setOnClickListener(new View.OnClickListener() {
@@ -165,22 +165,10 @@ public class SearchActivity extends AppCompatActivity  {
         dialog.show();
     }
 
-//    public void AddData()
-//    {
-//        boolean insertData = dataBaseHelper.addData();
-//        if(insertData)
-//        {
-//            toastMessage("Dane wprowadzone poprawnie");
-//        }
-//        else{
-//            toastMessage("Wystąpił błąd");
-//        }
-//    }
-
-//    private void toastMessage(String message)
-//    {
-//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-//    }
+    private void addToDataBase(){
+        dataBaseHelper = new DataBaseHelper(context);
+        boolean success = dataBaseHelper.addData(viewModel);
+    }
 
     private void alertShow(String text, String title, String buttonOption){
         AlertDialog.Builder alert = new AlertDialog.Builder(dialog.getContext());

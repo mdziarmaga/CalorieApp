@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.example.calorieapp.ApiConnection.apiMethodsController;
+import com.example.calorieapp.DataBase.ViewModel;
 import com.example.calorieapp.SearchPage.SearchActivity;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 //    private  final int maxCountCalories = 5000;
     private  final float maxCountCalories = 5000;
     BottomNavigationView navigationView;
+    List<PieEntry> valueOfCalories;
+    ViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,18 +80,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    public void init()
-//    {
-//        initiallizePieView();
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//               // piechart.notifyDataSetChanged();
-//                piechart.invalidate();
-//            }
-//        });
-//    }
+    public void addCaloriesPieChart()
+    {
+        valueOfCalories = new ArrayList<>();
+        valueOfCalories.add(new PieEntry(  CaloriesChange.getCountCalories()));
+        valueOfCalories.add(new PieEntry(maxCountCalories - CaloriesChange.getCountCalories()));
+
+
+    }
 
     public void onChipClick()
     {
@@ -158,12 +157,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void initiallizePieView()
+    public void initiallizePieView()
     {
-        piechart.notifyDataSetChanged();
         List<PieEntry> valueOfCalories = new ArrayList<>();
         valueOfCalories.add(new PieEntry(  CaloriesChange.getCountCalories()));
         valueOfCalories.add(new PieEntry(maxCountCalories - CaloriesChange.getCountCalories()));
+       // addCaloriesPieChart();
+
        // valueOfCalories.add(new Slice(15, "ss"));
        // valueOfCalories.add(new );
 
@@ -179,9 +179,7 @@ public class MainActivity extends AppCompatActivity {
         piechart.setRotationEnabled(true);
         piechart.setDrawEntryLabels(false); //usuwa opis na wykresie
         piechart.getLegend().setEnabled(false); //usuwa legende
-        piechart.setTouchEnabled(false); // blokuje krazenie grafu
-
-        piechart.invalidate();
+        piechart.setTouchEnabled(false); // blokuje krazenie graf
     }
 
     private void apiConnectionExample() throws IOException, JSONException {
