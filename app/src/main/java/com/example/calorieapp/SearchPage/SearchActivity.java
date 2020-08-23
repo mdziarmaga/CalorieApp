@@ -54,10 +54,8 @@ public class SearchActivity extends AppCompatActivity  {
     public static  Context context = null;
     BottomNavigationView navigationView;
     DataBaseHelper dataBaseHelper;
-    MainActivity m = new MainActivity();
     ViewModel viewModel;
 
-    private static final String TAG ="SearcActivity";
 
 
     @Override
@@ -72,7 +70,6 @@ public class SearchActivity extends AppCompatActivity  {
         navigationView = findViewById(R.id.navigation);
         navigationView.setSelectedItemId(R.id.menu_addProduct);
         navigationView.setOnNavigationItemSelectedListener(navigationListener);
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navigationListener =
@@ -108,11 +105,6 @@ public class SearchActivity extends AppCompatActivity  {
         startActivity(intent);
     }
 
-    @Override
-    public void onBackPressed() {
-
-        super.onBackPressed();
-    }
 
     public void openAddDialog(final Food_ food, View view)
     {
@@ -133,19 +125,20 @@ public class SearchActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 if(!textt.toString().isEmpty())
                 {
-                    int countCaloriesOfProduct = Integer.parseInt(editText.getText().toString());
+                    int weight = Integer.parseInt(editText.getText().toString());
                     double caloriesOfProductDouble = food.getNutrients().getENERCKCAL();
-                    float caloriesOfProductInt = (float) caloriesOfProductDouble;
-                    float sumCalories = countCaloriesOfProduct * (caloriesOfProductInt/1000);
+                    float caloriesOfProduct= (float) caloriesOfProductDouble;
+                   /// float sumCalories = countCaloriesOfProduct * (caloriesOfProduct/1000);
+                    float sumCalories = calculateCalories(weight, caloriesOfProduct);
                     CaloriesChange.addCalories(sumCalories);
-                  //  m.initiallizePieView();
 
                     //tworzenie modeu do bazy danych
-                   viewModel = new ViewModel( -1 ,food.getLabel() , food.getNutrients().getENERCKCAL(), countCaloriesOfProduct, sumCalories );
+                   viewModel = new ViewModel( -1 ,food.getLabel(), food.getNutrients().getENERCKCAL(),
+                           weight, sumCalories, food.getNutrients().getPROCNT(),food.getNutrients().getFAT(),
+                           food.getNutrients().getCHOCDF(),food.getNutrients().getFIBTG());
 
-//                    dataBaseHelper = new DataBaseHelper(context);
-//                    boolean success = dataBaseHelper.addData(viewModel);
-                    addToDataBase();
+                    dataBaseHelper = new DataBaseHelper(context);
+                    boolean success = dataBaseHelper.addData(viewModel);
 
                     alertShow("Produkt został dodany", null, "Ok");
                     dialog.dismiss();
@@ -165,9 +158,9 @@ public class SearchActivity extends AppCompatActivity  {
         dialog.show();
     }
 
-    private void addToDataBase(){
-        dataBaseHelper = new DataBaseHelper(context);
-        boolean success = dataBaseHelper.addData(viewModel);
+    public float calculateCalories(float count, float calories)
+    {
+        return count * (calories/1000);
     }
 
     private void alertShow(String text, String title, String buttonOption){
@@ -197,7 +190,6 @@ public class SearchActivity extends AppCompatActivity  {
             @Override
             public boolean onQueryTextSubmit(String s)
             {
-
                 try {
                     food_list =  new apiMethodsController().getHints(s);
                     listView = findViewById(R.id.listView);

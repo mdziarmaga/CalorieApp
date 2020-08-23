@@ -4,23 +4,32 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.service.quicksettings.Tile;
+import android.text.Editable;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.calorieapp.DataBase.DataBaseHelper;
 import com.example.calorieapp.DataBase.ViewModel;
+import com.example.calorieapp.SearchPage.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,100 +38,150 @@ public class DetailProductActivity extends AppCompatActivity {
 
     BottomNavigationView navigationView;
     ListView list;
-    ProgressDialog progressDialog;
     DataBaseHelper dataBaseHelper;
     ArrayAdapter<ViewModel> productAdapter;
     ViewModel clickedProduct;
     Button deleteDataButton;
     Button editDataButton;
-    int checkedProduct =0;
+    Button detailDataButoon;
+    int checkedProduct = 0;
+    public static Context context = null;
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_product);
-        list = findViewById(R.id.product_list);
+        list =  (ListView) findViewById(R.id.product_list);
         deleteDataButton = findViewById(R.id.button_delete);
         editDataButton = findViewById(R.id.button_Edit);
-
+        detailDataButoon = findViewById(R.id.button_detail);
         addDataToList();
 
         list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                 clickedProduct = (ViewModel) parent.getItemAtPosition(position);
-                 checkedProduct = position;
+                clickedProduct = (ViewModel) parent.getItemAtPosition(position);
+                checkedProduct = clickedProduct.getId();
             }
         });
 
-        deleteDataButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    dataBaseHelper.deleteData(clickedProduct);
-                    refreshList(dataBaseHelper);
-                    Toast.makeText(DetailProductActivity.this, "Produkt usuniety", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        editDataButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final AlertDialog.Builder alertDialog =new AlertDialog.Builder(DetailProductActivity.this);
-                final EditText editText= new EditText(getApplicationContext());
-                alertDialog.setTitle("Edycja produktu ");
-                alertDialog.setMessage("\nWpisz nową ilość produktu");
-                alertDialog.setView(editText);
-                alertDialog.setPositiveButton("Zapisz", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(!editText.toString().isEmpty()) {
-//                            float newCount = Float.parseFloat(editText.getText().toString());
-//                            dataBaseHelper.updateDate(clickedProduct, newCount);
-//                            refreshList(dataBaseHelper);
-                           // Toast.makeText(DetailProductActivity.this, "Produkt został zaktualizowany", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            alertShow("Wprowadź dane", "Błąd", "Ok" );
-                            //Toast.makeText(DetailProductActivity.this, "Wprowadź dane", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                alertDialog.setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                       // finish();
-                    }
-                });
-
-                alertDialog.show();
-            }
-        });
+        deleteData();
+        editData();
+        detailData();
 
         navigationView = findViewById(R.id.navigation);
         navigationView.setSelected(false);
         navigationView.setOnNavigationItemSelectedListener(navigationListener);
     }
 
-    private void alertShow(String text, String title, String buttonOption){
-        AlertDialog.Builder alert = new AlertDialog.Builder(getApplicationContext());
-        alert.setMessage(text);
-        alert.setTitle(title);
-        alert.setPositiveButton(buttonOption, new DialogInterface.OnClickListener() {
+    public void detailData()
+    {
+        detailDataButoon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+            public void onClick(View v) {
+                if(checkedProduct !=0) {
+                    dialog = new Dialog(DetailProductActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.detail_dialog);
+
+                    TextView nameTV = dialog.findViewById(R.id.name_productTV);
+                    nameTV.setText(clickedProduct.getProductName());
+
+                    TextView weightTV = dialog.findViewById(R.id.weight_productTV);
+                    weightTV.setText(String.valueOf(Math.round(clickedProduct.getWeight())));
+
+                    TextView energyTV = dialog.findViewById(R.id.energyTV);
+                    energyTV.setText(String.valueOf(Math.round(clickedProduct.getEnergy())));
+
+                    TextView proteinTV = dialog.findViewById(R.id.proteinTV);
+                    proteinTV.setText(String.valueOf(Math.round(clickedProduct.getProtein())));
+
+                    TextView carbsTV = dialog.findViewById(R.id.carbsTV);
+                    carbsTV.setText(String.valueOf(Math.round(clickedProduct.getCarbs())));
+
+                    TextView fatTV = dialog.findViewById(R.id.fatTV);
+                    fatTV.setText(String.valueOf(Math.round(clickedProduct.getFat())));
+
+                    TextView fiberTV = dialog.findViewById(R.id.fiberTv);
+                    fiberTV.setText(String.valueOf(Math.round(clickedProduct.getFiber())));
+
+                    Button positiveButton = dialog.findViewById(R.id.positiveButton);
+                    positiveButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                }
             }
         });
-        alert.create();
-        alert.show();
+    }
+
+    public void deleteData()
+    {
+        deleteDataButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkedProduct != 0) {
+                    dataBaseHelper.deleteData(clickedProduct);
+                    refreshList(dataBaseHelper);
+                    Toast.makeText(DetailProductActivity.this, "Produkt usuniety", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public void editData()
+    {
+        editDataButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkedProduct != 0) {
+                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(DetailProductActivity.this);
+                    final EditText editText = new EditText(getApplicationContext());
+                    alertDialog.setTitle("Edycja produktu ");
+                    alertDialog.setMessage("\nWpisz nową wagę produktu");
+                    alertDialog.setView(editText);
+                    alertDialog.setPositiveButton("Zapisz", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            if (!editText.getText().toString().isEmpty()) {
+                                float count = (Float.parseFloat(editText.getText().toString()));
+                                double newSumCalories = count * (clickedProduct.getEnergy()/100);
+
+                                clickedProduct.setSumCalories(newSumCalories);
+                                clickedProduct.setWeight(count);
+                                CaloriesChange.setCountCalories( (float) newSumCalories);
+
+                                boolean isUpdated = dataBaseHelper.upDate(clickedProduct);
+                                if (isUpdated == true) {
+                                    refreshList(dataBaseHelper);
+                                    Toast.makeText(DetailProductActivity.this, "Produkt został zaktualizowany", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(DetailProductActivity.this, "Uzupełnij dane", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    alertDialog.setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    alertDialog.show();
+                }
+            }
+        });
     }
 
     private void refreshList(DataBaseHelper dataBaseHelper)
     {
-        productAdapter = new ArrayAdapter<ViewModel>(getApplicationContext(), android.R.layout.simple_list_item_activated_1 , dataBaseHelper.getAll()); //simple_list_item_activated_1
+        productAdapter = new ArrayAdapter<ViewModel>(getApplicationContext(), android.R.layout.simple_list_item_activated_1 , dataBaseHelper.getAll()); //simple_list_item_activated_1 simple_list_item_1
         list.setAdapter(productAdapter);
     }
 

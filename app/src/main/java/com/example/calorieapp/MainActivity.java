@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.example.calorieapp.ApiConnection.apiMethodsController;
+import com.example.calorieapp.DataBase.DataBaseHelper;
 import com.example.calorieapp.DataBase.ViewModel;
 import com.example.calorieapp.SearchPage.SearchActivity;
 import com.github.mikephil.charting.charts.PieChart;
@@ -47,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     PieChart piechart;
     Button addPoductButton;
     Chip productChip;
-//    private  final int maxCountCalories = 5000;
     private  final float maxCountCalories = 5000;
     BottomNavigationView navigationView;
     List<PieEntry> valueOfCalories;
@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         piechart = findViewById(R.id.pieView);
         navigationView = findViewById(R.id.navigation);
         productChip = findViewById(R.id.chip_product);
-
 
         initiallizePieView();
 
@@ -85,8 +84,6 @@ public class MainActivity extends AppCompatActivity {
         valueOfCalories = new ArrayList<>();
         valueOfCalories.add(new PieEntry(  CaloriesChange.getCountCalories()));
         valueOfCalories.add(new PieEntry(maxCountCalories - CaloriesChange.getCountCalories()));
-
-
     }
 
     public void onChipClick()
@@ -121,19 +118,6 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-//    public void addCalories(View view)
-//    {
-//        CaloriesChange.addCalories(110);
-//        initiallizePieView();
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                    piechart.invalidate();
-//                }
-//            });
-//
-//    }
-
     private void onAddProductButtonClick()
     {
         addPoductButton = findViewById(R.id.addProduct);
@@ -159,13 +143,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void initiallizePieView()
     {
+        //float calories = viewModel.getSumCalories();
+
         List<PieEntry> valueOfCalories = new ArrayList<>();
         valueOfCalories.add(new PieEntry(  CaloriesChange.getCountCalories()));
         valueOfCalories.add(new PieEntry(maxCountCalories - CaloriesChange.getCountCalories()));
-       // addCaloriesPieChart();
-
-       // valueOfCalories.add(new Slice(15, "ss"));
-       // valueOfCalories.add(new );
 
         PieDataSet pieDataSet =new PieDataSet(valueOfCalories, "Calories");
         PieData pieData = new PieData(pieDataSet);

@@ -5,49 +5,25 @@ import androidx.annotation.NonNull;
 public class ViewModel {
     private int id;
     private String productName;
-    private double caloriesProduct;
-    private double countProduct;
-    private boolean choosenProduct = false;
-    private float sum;
-    private int selectedProduct;
+    private double energy;
+    private double weight;
+    private double sumCalories;
+    //private boolean choosenProduct = false;
+    private double protein;
+    private double fat;
+    private double carbs;
+    private double fiber;
 
-
-    public ViewModel(int id, String productName, double caloriesProduct, double countProduct, float sum) {
+    public ViewModel(int id, String productName, double energy, double weight, double sumCalories, double protein, double fat, double carbs, double fiber) {
         this.id = id;
         this.productName = productName;
-        this.caloriesProduct = caloriesProduct;
-        this.countProduct = countProduct;
-        this.sum = sum;
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return String.format("%s \nkalorie %.0f \nilość %.0f ", productName, caloriesProduct, countProduct);
-      //  return productName + countProduct + caloriesProduct;
-    }
-
-    public int getSelectedProduct(int position)
-    {
-        selectedProduct = position;
-        return position;
-    }
-    public float getSum() {
-        return sum;
-    }
-
-    public void setSum(float sum) {
-        this.sum = sum;
-    }
-
-    public boolean isChoosen()
-    {
-        return choosenProduct;
-    }
-
-    public void setChoosenProduct(boolean choosenProduct)
-    {
-        this.choosenProduct = choosenProduct;
+        this.energy = energy;
+        this.weight = weight;
+        this.sumCalories = sumCalories;
+        this.protein = protein;
+        this.fat = fat;
+        this.carbs = carbs;
+        this.fiber = fiber;
     }
 
     public int getId() {
@@ -66,19 +42,66 @@ public class ViewModel {
         this.productName = productName;
     }
 
-    public double getCaloriesProduct() {
-        return caloriesProduct;
+    public double getSumCalories() {
+        return sumCalories;
     }
 
-    public void setCaloriesProduct(double caloriesProduct) {
-        this.caloriesProduct = caloriesProduct;
+    public void setSumCalories(double sumCalories) {
+        this.sumCalories = sumCalories;
     }
 
-    public double getCountProduct() {
-        return countProduct;
+    public double getEnergy() {
+        return energy;
     }
 
-    public void setCountProduct(double countProduct) {
-        this.countProduct = countProduct;
+    public void setEnergy(double energy) {
+        this.energy = energy;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public double getProtein() {
+        return protein;
+    }
+
+    public void setProtein(double protein) {
+        this.protein = protein;
+    }
+
+    public double getFat() {
+        return fat;
+    }
+
+    public void setFat(double fat) {
+        this.fat = fat;
+    }
+
+    public double getCarbs() {
+        return carbs;
+    }
+
+    public void setCarbs(double carbs) {
+        this.carbs = carbs;
+    }
+
+    public double getFiber() {
+        return fiber;
+    }
+
+    public void setFiber(double fiber) {
+        this.fiber = fiber;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format("%s \nilość kalorii %.0f kcal\nwaga %.0f g ", productName, sumCalories, weight);
+
     }
 }
