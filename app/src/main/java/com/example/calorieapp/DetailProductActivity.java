@@ -1,6 +1,7 @@
 package com.example.calorieapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -9,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.service.quicksettings.Tile;
 import android.text.Editable;
@@ -31,6 +33,11 @@ import com.example.calorieapp.SearchPage.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +54,9 @@ public class DetailProductActivity extends AppCompatActivity {
     int checkedProduct = 0;
     public static Context context = null;
     Dialog dialog;
+    SimpleDateFormat dateFormat ;
+    Date date ;
+    String todayDate ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +66,11 @@ public class DetailProductActivity extends AppCompatActivity {
         deleteDataButton = findViewById(R.id.button_delete);
         editDataButton = findViewById(R.id.button_Edit);
         detailDataButoon = findViewById(R.id.button_detail);
+
+        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        date = new Date() ;
+        todayDate = dateFormat.format(date);
+
         addDataToList();
 
         list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -181,14 +196,14 @@ public class DetailProductActivity extends AppCompatActivity {
 
     private void refreshList(DataBaseHelper dataBaseHelper)
     {
-        productAdapter = new ArrayAdapter<ViewModel>(getApplicationContext(), android.R.layout.simple_list_item_activated_1 , dataBaseHelper.getAll()); //simple_list_item_activated_1 simple_list_item_1
+        productAdapter = new ArrayAdapter<ViewModel>(getApplicationContext(), android.R.layout.simple_list_item_activated_1 , dataBaseHelper.getData(todayDate)); //getall() //simple_list_item_activated_1 simple_list_item_1
         list.setAdapter(productAdapter);
     }
 
     public void addDataToList()
     {
         dataBaseHelper = new DataBaseHelper(DetailProductActivity.this);
-        List<ViewModel> productList = dataBaseHelper.getAll();
+        List<ViewModel> productList = dataBaseHelper.getData(todayDate); //getAll()
         refreshList(dataBaseHelper);
     }
 

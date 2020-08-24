@@ -2,19 +2,16 @@ package com.example.calorieapp.DataBase;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.view.View;
-import android.widget.CalendarView;
 
 import androidx.annotation.Nullable;
 
 import com.example.calorieapp.CaloriesChange;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +28,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_PRODUCT_CARBS = "PRODUCT_CARBS";
     public static final String COLUMN_PRODUCT_FIBER = "PRODUCT_FIBER";
 
-    //public static final String COLUMN_DATE = "PRODUCT_DATE";
+    public static final String COLUMN_DATE = "PRODUCT_DATE";
 
     public boolean upDate(ViewModel viewModel )
     {
@@ -41,20 +38,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_PRODUCT_NAME, viewModel.getProductName());
         contentValues.put(COLUMN_PRODUCT_ENERGY,viewModel.getEnergy());
         contentValues.put(COLUMN_PRODUCT_WEIGHT, viewModel.getWeight());
-
         contentValues.put(COLUMN_PRODUCT_SUMCALORIES ,viewModel.getSumCalories() );
         contentValues.put(COLUMN_PRODUCT_PROTEIN, viewModel.getProtein());
         contentValues.put(COLUMN_PRODUCT_FAT,viewModel.getFat());
         contentValues.put(COLUMN_PRODUCT_CARBS ,viewModel.getCarbs() );
         contentValues.put(COLUMN_PRODUCT_FIBER ,viewModel.getFiber() );
 
-
         db.update(PRODUCT_TABLE, contentValues, "ID = ?", new String[]{Integer.toString(viewModel.getId())}); //"viewModel.getId()"
         return true;
     }
 
     public DataBaseHelper(@Nullable Context context) {
-        super(context, "calorie.db", null, 1);
+        super(context, "calorie.db", null, 2);
     }
 
     @Override
@@ -69,33 +64,34 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + COLUMN_PRODUCT_PROTEIN + " DOUBLE, "
                 + COLUMN_PRODUCT_FAT + " DOUBLE, "
                 + COLUMN_PRODUCT_CARBS + " DOUBLE, "
-                + COLUMN_PRODUCT_FIBER + " DOUBLE )"; // )";
-
-               // + COLUMN_DATE + " DATE )";
+                + COLUMN_PRODUCT_FIBER + " DOUBLE, " // )";
+                + COLUMN_DATE + " DATE )";
         db.execSQL(createTableStatement);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//      if(oldVersion < 3)
-//          db.execSQL("ALTER TABLE " + PRODUCT_TABLE + " ADD COLUMN " + COLUMN_PRODUCT_SUMCALORIES + " DOUBLE");
+      if(oldVersion < 3)
+          db.execSQL("ALTER TABLE " + PRODUCT_TABLE + " ADD COLUMN " + COLUMN_DATE + " DATE ");
     }
 
     public boolean addData(ViewModel viewModel)
     {
-         SQLiteDatabase db = this.getWritableDatabase();
-         ContentValues contentValues = new ContentValues();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = new Date() ;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
 
-         contentValues.put(COLUMN_PRODUCT_NAME, viewModel.getProductName());
-         contentValues.put(COLUMN_PRODUCT_WEIGHT, viewModel.getWeight());
-         contentValues.put(COLUMN_PRODUCT_ENERGY,viewModel.getEnergy());
-         contentValues.put(COLUMN_PRODUCT_SUMCALORIES ,viewModel.getSumCalories() );
-
+        contentValues.put(COLUMN_PRODUCT_NAME, viewModel.getProductName());
+        contentValues.put(COLUMN_PRODUCT_WEIGHT, viewModel.getWeight());
+        contentValues.put(COLUMN_PRODUCT_ENERGY,viewModel.getEnergy());
+        contentValues.put(COLUMN_PRODUCT_SUMCALORIES ,viewModel.getSumCalories() );
         contentValues.put(COLUMN_PRODUCT_PROTEIN, viewModel.getProtein());
         contentValues.put(COLUMN_PRODUCT_FAT, viewModel.getFat());
         contentValues.put(COLUMN_PRODUCT_CARBS,viewModel.getCarbs());
         contentValues.put(COLUMN_PRODUCT_FIBER ,viewModel.getFiber() );
-        //contentValues.put(COLUMN_DATE, );
+        contentValues.put(COLUMN_DATE , dateFormat.format(date) );
+
         long insert = db.insert(PRODUCT_TABLE, null, contentValues);
         if(insert == -1)
         {
@@ -107,7 +103,41 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public List<ViewModel> getData(String date)
+    {
+        List<ViewModel> getList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+       // String queryString = "SELECT * FROM " + PRODUCT_TABLE + " WHERE " + COLUMN_DATE + " = " + date;
+      //  Cursor data = db.rawQuery(queryString, null);
+        Cursor data = db.rawQuery("SELECT * FROM PRODUCT_TABLE WHERE PRODUCT_DATE =?", new String[] {date} );
+//        String[] columns = {COLUMN_DATE, COLUMN_PRODUCT_WEIGHT, COLUMN_PRODUCT_SUMCALORIES, COLUMN_PRODUCT_PROTEIN, COLUMN_PRODUCT_NAME, COLUMN_PRODUCT_FIBER,COLUMN_PRODUCT_FAT, COLUMN_PRODUCT_ENERGY,COLUMN_PRODUCT_CARBS,COLUMN_ID};
+//        Cursor data = db.query(PRODUCT_TABLE, columns, COLUMN_DATE, new String[]{date}, null, null, null);
+        if(data.moveToFirst())
+        {
+            do{
+                int productId = data.getInt(0);
+                String productName = data.getString(1);
+                double energy = data.getDouble(2);
+                double weight = data.getDouble(3);
+                double sumCalories = data.getDouble(4);
+                double protein = data.getDouble(5);
+                double fat = data.getDouble(6);
+                double carbs = data.getDouble(7);
+                double fiber = data.getDouble(8);
 
+                CaloriesChange.setCountCalories((float)sumCalories);
+                ViewModel newModel = new ViewModel(productId, productName, energy, weight, sumCalories, protein,fat, carbs, fiber);
+                getList.add(newModel);
+            }while(data.moveToNext());
+        }
+        else
+        {
+
+        }
+        data.close();
+        db.close();
+        return  getList;
+    }
 
     public List<ViewModel> getAll()
     {
@@ -129,7 +159,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 double carbs = data.getDouble(7);
                 double fiber = data.getDouble(8);
 
-                //CaloriesChange.setCountCalories((float)sumCalories);
+                CaloriesChange.setCountCalories((float)sumCalories);
                 ViewModel newModel = new ViewModel(productId, productName, energy, weight, sumCalories, protein,fat, carbs, fiber);
                 getList.add(newModel);
             }while(data.moveToNext());

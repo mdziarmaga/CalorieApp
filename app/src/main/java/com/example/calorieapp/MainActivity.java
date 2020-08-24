@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         piechart = findViewById(R.id.pieView);
         navigationView = findViewById(R.id.navigation);
         productChip = findViewById(R.id.chip_product);
@@ -145,8 +147,9 @@ public class MainActivity extends AppCompatActivity {
     {
         //float calories = viewModel.getSumCalories();
 
+       // float sum = (float) viewModel.getSumCalories();
         List<PieEntry> valueOfCalories = new ArrayList<>();
-        valueOfCalories.add(new PieEntry(  CaloriesChange.getCountCalories()));
+        valueOfCalories.add(new PieEntry( CaloriesChange.getCountCalories() )); //CaloriesChange.getCountCalories()
         valueOfCalories.add(new PieEntry(maxCountCalories - CaloriesChange.getCountCalories()));
 
         PieDataSet pieDataSet =new PieDataSet(valueOfCalories, "Calories");
