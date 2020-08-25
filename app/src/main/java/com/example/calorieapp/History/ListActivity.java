@@ -6,18 +6,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.calorieapp.DataBase.DataBaseHelper;
 import com.example.calorieapp.DataBase.ViewModel;
-import com.example.calorieapp.HistoryActivity;
 import com.example.calorieapp.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListActivity extends AppCompatActivity {
@@ -34,15 +30,18 @@ public class ListActivity extends AppCompatActivity {
 
         text = findViewById(R.id.textView11);
         listView = findViewById(R.id.list);
-
+        dataBaseHelper = new DataBaseHelper(this);
         Intent intent = getIntent();
         date = intent.getStringExtra("date");
 
-        text.setText(" Produkty z dnia " + date);
-        dataBaseHelper = new DataBaseHelper(this);
-
+        float sumOfCalories = getSumOfCalories();
         addDataToList();
+        text.setText(" Ilość kalorii w dniu " + date + "\n wynosi " + String.format("%.0f", sumOfCalories)  );
+    }
 
+    public float getSumOfCalories()
+    {
+        return Math.round(dataBaseHelper.getSumCalories(date));
     }
 
     public void addDataToList()

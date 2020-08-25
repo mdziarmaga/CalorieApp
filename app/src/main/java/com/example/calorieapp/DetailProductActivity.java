@@ -1,44 +1,32 @@
 package com.example.calorieapp;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.service.quicksettings.Tile;
-import android.text.Editable;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckedTextView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.calorieapp.DataBase.DataBaseHelper;
 import com.example.calorieapp.DataBase.ViewModel;
-import com.example.calorieapp.SearchPage.SearchActivity;
+import com.example.calorieapp.History.HistoryActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DetailProductActivity extends AppCompatActivity {
@@ -68,14 +56,29 @@ public class DetailProductActivity extends AppCompatActivity {
         editDataButton = findViewById(R.id.button_Edit);
         detailDataButoon = findViewById(R.id.button_detail);
         todayDateTextView = findViewById(R.id.textView12);
+        dataBaseHelper = new DataBaseHelper(DetailProductActivity.this);
+
 
         dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         date = new Date() ;
         todayDate = dateFormat.format(date);
-        todayDateTextView.setText("Dzisiaj " + todayDate);
+
+        todayDateTextView.setText("Dzisiaj " + todayDate );
 
         addDataToList();
 
+        listEvent();
+        deleteData();
+        editData();
+        detailData();
+
+        navigationView = findViewById(R.id.navigation);
+        navigationView.setSelected(false);
+        navigationView.setOnNavigationItemSelectedListener(navigationListener);
+    }
+
+    public void listEvent()
+    {
         list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -84,14 +87,6 @@ public class DetailProductActivity extends AppCompatActivity {
                 checkedProduct = clickedProduct.getId();
             }
         });
-
-        deleteData();
-        editData();
-        detailData();
-
-        navigationView = findViewById(R.id.navigation);
-        navigationView.setSelected(false);
-        navigationView.setOnNavigationItemSelectedListener(navigationListener);
     }
 
     public void detailData()
@@ -171,10 +166,8 @@ public class DetailProductActivity extends AppCompatActivity {
                             if (!editText.getText().toString().isEmpty()) {
                                 float count = (Float.parseFloat(editText.getText().toString()));
                                 double newSumCalories = count * (clickedProduct.getEnergy()/100);
-
                                 clickedProduct.setSumCalories(newSumCalories);
                                 clickedProduct.setWeight(count);
-                                CaloriesChange.setCountCalories( (float) newSumCalories);
 
                                 boolean isUpdated = dataBaseHelper.upDate(clickedProduct);
                                 if (isUpdated == true) {
@@ -205,8 +198,7 @@ public class DetailProductActivity extends AppCompatActivity {
 
     public void addDataToList()
     {
-        dataBaseHelper = new DataBaseHelper(DetailProductActivity.this);
-        List<ViewModel> productList = dataBaseHelper.getData(todayDate); //getAll()
+        List<ViewModel> productList = dataBaseHelper.getData(todayDate);
         refreshList(dataBaseHelper);
     }
 

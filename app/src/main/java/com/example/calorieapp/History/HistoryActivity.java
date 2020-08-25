@@ -1,29 +1,24 @@
-package com.example.calorieapp;
+package com.example.calorieapp.History;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.database.DatabaseErrorHandler;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.calorieapp.DataBase.DataBaseHelper;
-import com.example.calorieapp.DataBase.ViewModel;
-import com.example.calorieapp.History.ListActivity;
+import com.example.calorieapp.DetailProductActivity;
+import com.example.calorieapp.MainActivity;
+import com.example.calorieapp.R;
 import com.example.calorieapp.SearchPage.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -31,7 +26,6 @@ public class HistoryActivity extends AppCompatActivity {
     CalendarView calendar;
     DataBaseHelper dataBaseHelper;
     String choosenDate;
-    TextView t;
     ListView listView;
 
     @Override
@@ -39,7 +33,7 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         calendar = findViewById(R.id.calendarView);
-        t = findViewById(R.id.textView10);
+
         listView = findViewById(R.id.list);
 
         dataBaseHelper = new DataBaseHelper(HistoryActivity.this);
@@ -66,8 +60,6 @@ public class HistoryActivity extends AppCompatActivity {
                     String currentDate = dateFormat.format(dateCurent);
 
                     choosenDate = dateFormat.format(date);
-                    System.out.println("data" + choosenDate + " " + currentDate);
-                    t.setText(choosenDate);
 
                     Intent intent;
                     if(choosenDate.equals(currentDate) == true) //choosenDate.equals(currentDate)

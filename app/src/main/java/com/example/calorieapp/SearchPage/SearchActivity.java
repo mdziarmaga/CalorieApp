@@ -26,11 +26,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.calorieapp.ApiConnection.apiMethodsController;
-import com.example.calorieapp.CaloriesChange;
 import com.example.calorieapp.DataBase.DataBaseHelper;
 import com.example.calorieapp.DataBase.ViewModel;
 import com.example.calorieapp.Entities.Food_;
-import com.example.calorieapp.HistoryActivity;
+import com.example.calorieapp.History.HistoryActivity;
 import com.example.calorieapp.MainActivity;
 import com.example.calorieapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -123,9 +122,7 @@ public class SearchActivity extends AppCompatActivity  {
                     int weight = Integer.parseInt(editText.getText().toString());
                     double caloriesOfProductDouble = food.getNutrients().getENERCKCAL();
                     float caloriesOfProduct= (float) caloriesOfProductDouble;
-                   /// float sumCalories = countCaloriesOfProduct * (caloriesOfProduct/1000);
                     float sumCalories = calculateCalories(weight, caloriesOfProduct);
-                    CaloriesChange.addCalories(sumCalories);
 
                     //tworzenie modeu do bazy danych
                    viewModel = new ViewModel( -1 ,food.getLabel(), food.getNutrients().getENERCKCAL(),
@@ -175,8 +172,7 @@ public class SearchActivity extends AppCompatActivity  {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        StrictMode.ThreadPolicy policy = new
-                StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView)myActionMenuItem.getActionView();

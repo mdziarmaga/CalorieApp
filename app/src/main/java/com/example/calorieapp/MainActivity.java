@@ -2,31 +2,19 @@ package com.example.calorieapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.slice.Slice;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.renderscript.Sampler;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 
 import com.example.calorieapp.ApiConnection.apiMethodsController;
 import com.example.calorieapp.DataBase.DataBaseHelper;
-import com.example.calorieapp.DataBase.ViewModel;
+import com.example.calorieapp.History.HistoryActivity;
 import com.example.calorieapp.SearchPage.SearchActivity;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -35,12 +23,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
-import java.io.FileDescriptor;
 import java.io.IOException;
-import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -50,8 +37,11 @@ public class MainActivity extends AppCompatActivity {
     Chip productChip;
     private  final float maxCountCalories = 5000;
     BottomNavigationView navigationView;
-    List<PieEntry> valueOfCalories;
-    ViewModel viewModel;
+    DataBaseHelper dataBaseHelper;
+    SimpleDateFormat dateFormat ;
+    Date date ;
+    String todayDate ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +50,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        dataBaseHelper = new DataBaseHelper(this);
 
         piechart = findViewById(R.id.pieView);
         navigationView = findViewById(R.id.navigation);
         productChip = findViewById(R.id.chip_product);
 
-        initiallizePieView();
+        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        date = new Date() ;
+        todayDate = dateFormat.format(date);
 
+        initiallizePieView();
         onAddProductButtonClick();
         onChipClick();
+        navigation();
+    }
+
+    public void navigation()
+    {
         navigationView.setSelectedItemId(R.id.menu_homePage);
         navigationView.setOnNavigationItemSelectedListener(navigationListener);
         try {
@@ -79,13 +77,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    public void addCaloriesPieChart()
-    {
-        valueOfCalories = new ArrayList<>();
-        valueOfCalories.add(new PieEntry(  CaloriesChange.getCountCalories()));
-        valueOfCalories.add(new PieEntry(maxCountCalories - CaloriesChange.getCountCalories()));
     }
 
     public void onChipClick()
@@ -145,19 +136,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void initiallizePieView()
     {
-        //float calories = viewModel.getSumCalories();
-
-       // float sum = (float) viewModel.getSumCalories();
+        float sumCalories = getSumOfCalories();
         List<PieEntry> valueOfCalories = new ArrayList<>();
-        valueOfCalories.add(new PieEntry( CaloriesChange.getCountCalories() )); //CaloriesChange.getCountCalories()
-        valueOfCalories.add(new PieEntry(maxCountCalories - CaloriesChange.getCountCalories()));
+        valueOfCalories.add(new PieEntry( sumCalories )); //CaloriesChange.getCountCalories()
+        valueOfCalories.add(new PieEntry(maxCountCalories - sumCalories));
 
         PieDataSet pieDataSet =new PieDataSet(valueOfCalories, "Calories");
         PieData pieData = new PieData(pieDataSet);
         pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
 
         piechart.setData(pieData);
-        piechart.setCenterText(Math.round(CaloriesChange.getCountCalories()) + "\nkcal "); //caloriesCountPerDay
+        piechart.setCenterText( String.format("%.0f", sumCalories) + "\nkcal ");
         piechart.setCenterTextSize(20);
         piechart.getDescription().setEnabled(false);
         piechart.setHoleRadius(80);
@@ -165,6 +154,11 @@ public class MainActivity extends AppCompatActivity {
         piechart.setDrawEntryLabels(false); //usuwa opis na wykresie
         piechart.getLegend().setEnabled(false); //usuwa legende
         piechart.setTouchEnabled(false); // blokuje krazenie graf
+    }
+
+    public float getSumOfCalories()
+    {
+        return Math.round(dataBaseHelper.getSumCalories(todayDate));
     }
 
     private void apiConnectionExample() throws IOException, JSONException {

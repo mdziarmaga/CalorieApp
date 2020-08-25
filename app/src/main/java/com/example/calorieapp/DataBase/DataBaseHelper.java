@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import com.example.calorieapp.CaloriesChange;
-
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -138,32 +136,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return  getList;
     }
 
-    public double getSumCalories(String date)
+    public float getSumCalories(String date)
     {
-        double sum = 0;
+        float sum =0 ;
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT SUM("+ COLUMN_PRODUCT_SUMCALORIES+ ") FROM PRODUCT_TABLE WHERE PRODUCT_DATE =?", new String[] {date} );
-        if(data.moveToFirst())
-        {
-            do{
-//                int productId = data.getInt(0);
-//                String productName = data.getString(1);
-//                double energy = data.getDouble(2);
-//                double weight = data.getDouble(3);
-//                double sumCalories = data.getDouble(4);
-//                double protein = data.getDouble(5);
-//                double fat = data.getDouble(6);
-//                double carbs = data.getDouble(7);
-//                double fiber = data.getDouble(8);
-
-               // double sumCalories = data.getDouble(0);
-                sum = data.getDouble(data.getColumnIndex(COLUMN_PRODUCT_SUMCALORIES));
-
-            }while(data.moveToNext());
-
+        Cursor cursor = db.rawQuery("SELECT SUM("+ COLUMN_PRODUCT_SUMCALORIES+ ") FROM PRODUCT_TABLE WHERE PRODUCT_DATE =?", new String[] {date} );
+        if(cursor.moveToFirst()) {
+             sum = cursor.getFloat(0); //cursor.getColumnIndex(COLUMN_PRODUCT_SUMCALORIES)
         }
 
-        data.close();
+        cursor.close();
         db.close();
         return sum;
 

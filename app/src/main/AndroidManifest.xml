@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".History.ListActivity"></activity>
         <activity android:name=".DetailProductActivity" />
-        <activity android:name=".HistoryActivity" />
+        <activity android:name=".History.HistoryActivity" />
         <activity android:name=".CategoriesActivity" />
         <activity android:name=".SearchPage.SearchActivity" />
         <activity android:name=".MainActivity">
