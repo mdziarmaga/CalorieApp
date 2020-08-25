@@ -64,7 +64,7 @@ public class Nutrients_ {
 
     @Override
     public String toString() {
-        return "\n"+"Energy=" + (double)(Math.round(eNERCKCAL*100))/100 +"\n"+
+        return "\n"+"Energy_calories=" + (double)(Math.round(eNERCKCAL*100))/100 +"\n"+
                 " Protein=" + (double)(Math.round(pROCNT*100))/100 +"\n"+
                 " Fat=" +  (double)(Math.round(fAT*100))/100 +"\n"+
                 " Carbs=" +  (double)(Math.round(cHOCDF*100))/100 +"\n"+

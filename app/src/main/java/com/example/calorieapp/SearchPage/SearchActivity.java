@@ -38,7 +38,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class SearchActivity extends AppCompatActivity  {
     ListView listView;
@@ -59,11 +61,13 @@ public class SearchActivity extends AppCompatActivity  {
         setContentView(R.layout.search_activity);
         inflater = LayoutInflater.from(context);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Products List");
+        actionBar.setTitle("Find your product...");
+
 
         navigationView = findViewById(R.id.navigation);
         navigationView.setSelectedItemId(R.id.menu_addProduct);
         navigationView.setOnNavigationItemSelectedListener(navigationListener);
+        navigationView.getItemTextAppearanceActive();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navigationListener =
@@ -168,41 +172,66 @@ public class SearchActivity extends AppCompatActivity  {
         alert.create();
         alert.show();
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        List<String> popularFood = Arrays.asList(new String[]{"apple","bread","coffe","egg","milk","orange","water","potato","banana","tea","cheese","meat","pasta","cucumber","carrot","chicken"});
+        String rand =null;
+        Random r=new Random();
+        int randomNumber=r.nextInt(popularFood.size());
+        set_foodList(popularFood.get(randomNumber));
+        set_foodList(popularFood.get(randomNumber));
         MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView)myActionMenuItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            List<Food_> food_list= null;
-            @Override
-            public boolean onQueryTextSubmit(String s)
-            {
-                try {
-                    food_list =  new apiMethodsController().getHints(s);
-                    listView = findViewById(R.id.list);
-                    adapter = new ListViewAdopter(SearchActivity.this, food_list);
-                    listView.setAdapter(adapter);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
+
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                public List<Food_> food_list = null;
+
+
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    food_list.clear();
+                    try {
+                        food_list = new apiMethodsController().getHints(s);
+                        listView = findViewById(R.id.list);
+                        adapter = new ListViewAdopter(SearchActivity.this, food_list);
+                        listView.setAdapter(adapter);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    return true;
                 }
 
-                return true;
-            }
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    if (TextUtils.isEmpty(s)) {
+                    } else {
+                    }
+                    return true;
+                }
+            });
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                if (TextUtils.isEmpty(s)){ }
-                else { }
-                return true;
-            }
-        });
-        return true;
+return true;
+    }
+    public void set_foodList(String rand)
+    {List<Food_> food_list = null;
+        try {
+            food_list = new apiMethodsController().getHints(rand);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        listView = findViewById(R.id.list);
+        adapter = new ListViewAdopter(SearchActivity.this, food_list);
+        listView.setAdapter(adapter);
     }
 
     @Override

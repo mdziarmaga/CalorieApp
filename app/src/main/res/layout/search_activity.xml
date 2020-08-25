@@ -9,7 +9,10 @@
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp">
+
     </ListView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -21,4 +24,5 @@
         android:background="?android:attr/windowBackground"
         app:itemTextColor="@drawable/selector"
         app:itemIconTint="@drawable/selector"/>
+
 </RelativeLayout>

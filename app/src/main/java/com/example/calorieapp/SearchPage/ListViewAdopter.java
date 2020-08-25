@@ -7,9 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.calorieapp.Entities.Food_;
 import com.example.calorieapp.MainActivity;
+import com.example.calorieapp.Entities.Food_;
 import com.example.calorieapp.R;
 import com.squareup.picasso.Picasso;
 
