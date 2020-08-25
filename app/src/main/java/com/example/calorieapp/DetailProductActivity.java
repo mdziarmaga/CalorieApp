@@ -57,6 +57,7 @@ public class DetailProductActivity extends AppCompatActivity {
     SimpleDateFormat dateFormat ;
     Date date ;
     String todayDate ;
+    TextView todayDateTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +67,12 @@ public class DetailProductActivity extends AppCompatActivity {
         deleteDataButton = findViewById(R.id.button_delete);
         editDataButton = findViewById(R.id.button_Edit);
         detailDataButoon = findViewById(R.id.button_detail);
+        todayDateTextView = findViewById(R.id.textView12);
 
         dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         date = new Date() ;
         todayDate = dateFormat.format(date);
+        todayDateTextView.setText("Dzisiaj " + todayDate);
 
         addDataToList();
 

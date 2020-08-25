@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.DatabaseErrorHandler;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -18,6 +19,11 @@ import com.example.calorieapp.DataBase.ViewModel;
 import com.example.calorieapp.History.ListActivity;
 import com.example.calorieapp.SearchPage.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -34,7 +40,7 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
         calendar = findViewById(R.id.calendarView);
         t = findViewById(R.id.textView10);
-        //listView = findViewById(R.id.list);
+        listView = findViewById(R.id.list);
 
         dataBaseHelper = new DataBaseHelper(HistoryActivity.this);
 
@@ -48,38 +54,44 @@ public class HistoryActivity extends AppCompatActivity {
 
     public void calendarEvent()
     {
-
-
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
-
-
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-               // final SimpleDateFormat dateFormat =new SimpleDateFormat("dd-MM-yyyy");
+                try {
+                    SimpleDateFormat dateFormat =new SimpleDateFormat("dd-MM-yyyy");
+                    String dateString = dayOfMonth+ "-"+ (month+1)+ "-" +year;
+                    Date date = dateFormat.parse(dateString);
+                    Date dateCurent = new Date();
+                    String currentDate = dateFormat.format(dateCurent);
 
+                    choosenDate = dateFormat.format(date);
+                    System.out.println("data" + choosenDate + " " + currentDate);
+                    t.setText(choosenDate);
 
-                //Date date = new Date(dayOfMonth, month,year);
-               // choosenDate = dateFormat.format(date);
-                //long date = calendar.;
-                //calendar.getDate();
-               // choosenDate = dateFormat.format(date);
-
-
-                choosenDate= dayOfMonth+ "-"+ month+ "-" +year;
-                Intent intent = new Intent(HistoryActivity.this, ListActivity.class);
-                intent.putExtra("date", choosenDate);
-                startActivity(intent);
+                    Intent intent;
+                    if(choosenDate.equals(currentDate) == true) //choosenDate.equals(currentDate)
+                    {
+                        intent = new Intent(HistoryActivity.this, DetailProductActivity.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        intent = new Intent(HistoryActivity.this, ListActivity.class);
+                        intent.putExtra("date", choosenDate);
+                        startActivity(intent);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
-
-    public void showDetail()
-    {
-        ArrayAdapter adapter = new ArrayAdapter<ViewModel>(getApplicationContext(), android.R.layout.simple_list_item_1,dataBaseHelper.getData(choosenDate));
-        listView.setAdapter(adapter);
-    }
+//
+//    public void showDetail()
+//    {
+//        ArrayAdapter adapter = new ArrayAdapter<ViewModel>(getApplicationContext(), android.R.layout.simple_list_item_1,dataBaseHelper.getData(choosenDate));
+//        listView.setAdapter(adapter);
+//    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navigationListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {

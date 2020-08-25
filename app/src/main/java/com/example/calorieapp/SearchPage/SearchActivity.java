@@ -5,17 +5,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -31,7 +27,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.calorieapp.ApiConnection.apiMethodsController;
 import com.example.calorieapp.CaloriesChange;
-import com.example.calorieapp.CategoriesActivity;
 import com.example.calorieapp.DataBase.DataBaseHelper;
 import com.example.calorieapp.DataBase.ViewModel;
 import com.example.calorieapp.Entities.Food_;
@@ -192,7 +187,7 @@ public class SearchActivity extends AppCompatActivity  {
             {
                 try {
                     food_list =  new apiMethodsController().getHints(s);
-                    listView = findViewById(R.id.listView);
+                    listView = findViewById(R.id.list);
                     adapter = new ListViewAdopter(SearchActivity.this, food_list);
                     listView.setAdapter(adapter);
                 } catch (IOException e) {
