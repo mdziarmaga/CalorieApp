@@ -160,7 +160,7 @@ public class SearchActivity extends AppCompatActivity  {
     }
 
     private void alertShow(String text, String title, String buttonOption){
-        AlertDialog.Builder alert = new AlertDialog.Builder(dialog.getContext());
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setMessage(text);
         alert.setTitle(title);
         alert.setPositiveButton(buttonOption, new DialogInterface.OnClickListener() {
@@ -194,16 +194,24 @@ public class SearchActivity extends AppCompatActivity  {
 
                 @Override
                 public boolean onQueryTextSubmit(String s) {
-                    food_list.clear();
+
                     try {
                         food_list = new apiMethodsController().getHints(s);
-                        listView = findViewById(R.id.list);
-                        adapter = new ListViewAdopter(SearchActivity.this, food_list);
-                        listView.setAdapter(adapter);
+                        if(food_list.size()>0) {
+                            listView = findViewById(R.id.list);
+                            adapter = new ListViewAdopter(SearchActivity.this, food_list);
+                            listView.setAdapter(adapter);
+                        }
+                        else
+                        {
+                            alertShow ("We do not have this product in our database","Product error","OK");
+                        }
+
+
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        alertShow("We do not have this product in our database","Product error","OK");
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        alertShow("We do not have this product in our database","Product error","OK");
                     }
 
                     return true;
@@ -213,6 +221,7 @@ public class SearchActivity extends AppCompatActivity  {
                 public boolean onQueryTextChange(String s) {
                     if (TextUtils.isEmpty(s)) {
                     } else {
+                        set_foodList(s);
                     }
                     return true;
                 }
