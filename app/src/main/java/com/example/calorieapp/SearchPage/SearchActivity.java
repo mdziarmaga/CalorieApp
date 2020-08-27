@@ -160,7 +160,7 @@ public class SearchActivity extends AppCompatActivity  {
     }
 
     private void alertShow(String text, String title, String buttonOption){
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        AlertDialog.Builder alert = new AlertDialog.Builder(context); //this
         alert.setMessage(text);
         alert.setTitle(title);
         alert.setPositiveButton(buttonOption, new DialogInterface.OnClickListener() {

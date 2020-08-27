@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     PieChart piechart;
     Button addPoductButton;
     Chip productChip;
-    private  final float maxCountCalories = 5000;
+    private  final float maxCountCalories = 3500;
     BottomNavigationView navigationView;
     DataBaseHelper dataBaseHelper;
     SimpleDateFormat dateFormat ;
@@ -134,12 +134,27 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private float checkCalories()
+    {
+        if(dataBaseHelper.getSumCalories(todayDate) > maxCountCalories)
+        {
+            final float newMaxCountCalories;
+            float different = dataBaseHelper.getSumCalories(todayDate) - maxCountCalories;
+            newMaxCountCalories = maxCountCalories + different +500;
+            return newMaxCountCalories;
+        }
+        else
+        {
+            return maxCountCalories;
+        }
+    }
+
     public void initiallizePieView()
     {
         float sumCalories = getSumOfCalories();
         List<PieEntry> valueOfCalories = new ArrayList<>();
         valueOfCalories.add(new PieEntry( sumCalories )); //CaloriesChange.getCountCalories()
-        valueOfCalories.add(new PieEntry(maxCountCalories - sumCalories));
+        valueOfCalories.add(new PieEntry(checkCalories() - sumCalories)); //maxCountCalories
 
         PieDataSet pieDataSet =new PieDataSet(valueOfCalories, "Calories");
         PieData pieData = new PieData(pieDataSet);
