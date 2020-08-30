@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="Historia"
+        android:title="History"
         android:id="@+id/menu_history"
         android:enabled="true"
         android:icon="@drawable/ic_history"
         />
     <item
-        android:title="Strona główna"
+        android:title="Main page"
         android:id="@+id/menu_homePage"
         android:enabled="true"
         android:icon="@drawable/ic_home"
         />
     <item
-        android:title="Dodaj produkt"
-        android:id="@+id/menu_addProduct"
+        android:id="@+id/menu_details"
         android:enabled="true"
-        android:icon="@drawable/ic_add"
-        />
+        android:icon="@drawable/ic_daily"
+        android:title="Today's products " />
 
 
 </menu>

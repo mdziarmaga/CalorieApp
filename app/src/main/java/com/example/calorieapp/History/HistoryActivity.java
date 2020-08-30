@@ -91,8 +91,8 @@ public class HistoryActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     switch(menuItem.getItemId())
                     {
-                        case R.id.menu_addProduct:
-                            openSearchActivity();
+                        case R.id.menu_details:
+                            openDailyProductActivity();
                             overridePendingTransition(0,0);
                             return true;
                         case R.id.menu_history:
@@ -106,9 +106,9 @@ public class HistoryActivity extends AppCompatActivity {
                 }
             };
 
-    private void openSearchActivity()
+    private void openDailyProductActivity()
     {
-        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+        Intent intent = new Intent(getApplicationContext(), DetailProductActivity.class);
         startActivity(intent);
     }
 
@@ -117,5 +117,4 @@ public class HistoryActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
-
 }

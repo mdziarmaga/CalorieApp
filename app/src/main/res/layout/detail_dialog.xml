@@ -20,7 +20,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="25dp"
         android:layout_marginTop="25dp"
-        android:text="Nazwa produktu" />
+        android:text="Product name" />
 
     <TextView
         android:id="@+id/textView2"
@@ -30,7 +30,7 @@
         android:layout_alignStart="@+id/textView"
         android:layout_marginStart="3dp"
         android:layout_marginTop="25dp"
-        android:text="Waga produktu" />
+        android:text="Product weight" />
 
     <TextView
         android:id="@+id/textView3"
@@ -40,7 +40,7 @@
         android:layout_alignStart="@+id/textView2"
         android:layout_marginStart="1dp"
         android:layout_marginTop="21dp"
-        android:text="Kalorie" />
+        android:text="Calories" />
 
     <TextView
         android:id="@+id/name_productTV"
@@ -112,7 +112,7 @@
         android:layout_alignStart="@+id/textView3"
         android:layout_marginStart="-1dp"
         android:layout_marginTop="27dp"
-        android:text="Białko" />
+        android:text="Protein" />
 
     <TextView
         android:id="@+id/textView7"
@@ -122,7 +122,7 @@
         android:layout_alignStart="@+id/textView6"
         android:layout_marginStart="2dp"
         android:layout_marginTop="17dp"
-        android:text="Węgowodany" />
+        android:text="Carbs" />
 
     <TextView
         android:id="@+id/textView8"
@@ -132,7 +132,7 @@
         android:layout_alignStart="@+id/textView7"
         android:layout_marginStart="2dp"
         android:layout_marginTop="22dp"
-        android:text="Tłuszcz" />
+        android:text="Fat" />
 
     <TextView
         android:id="@+id/textView9"
@@ -142,7 +142,7 @@
         android:layout_alignStart="@+id/textView8"
         android:layout_marginStart="-1dp"
         android:layout_marginTop="28dp"
-        android:text="Błonnik" />
+        android:text="Fiber" />
 
     <TextView
         android:id="@+id/proteinTV"

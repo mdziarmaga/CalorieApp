@@ -64,19 +64,21 @@ public class DetailProductActivity extends AppCompatActivity {
         todayDate = dateFormat.format(date);
 
         todayDateTextView.setText("Dzisiaj " + todayDate );
-
+        navigationView = findViewById(R.id.navigation);
         addDataToList();
 
         listEvent();
         deleteData();
         editData();
         detailData();
+        navigation();
 
-        navigationView = findViewById(R.id.navigation);
-        navigationView.setSelected(false);
+    }
+    public void navigation()
+    {
+        navigationView.setSelectedItemId(R.id.menu_details);
         navigationView.setOnNavigationItemSelectedListener(navigationListener);
     }
-
     public void listEvent()
     {
         list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -208,9 +210,7 @@ public class DetailProductActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     switch(menuItem.getItemId())
                     {
-                        case R.id.menu_addProduct:
-                            openCategoriesActivity();
-                            overridePendingTransition(0,0);
+                        case R.id.menu_details:
                             return true;
                         case R.id.menu_history:
                             openHistoryPage();
@@ -231,9 +231,9 @@ public class DetailProductActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void openCategoriesActivity()
+    private void openDailyProducts()
     {
-        Intent intent = new Intent(getApplicationContext(), CategoriesActivity.class);
+        Intent intent = new Intent(getApplicationContext(), DetailProductActivity.class);
         startActivity(intent);
     }
 

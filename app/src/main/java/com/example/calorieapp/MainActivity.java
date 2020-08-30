@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.MenuItem;
@@ -54,15 +55,13 @@ public class MainActivity extends AppCompatActivity {
 
         piechart = findViewById(R.id.pieView);
         navigationView = findViewById(R.id.navigation);
-        productChip = findViewById(R.id.chip_product);
 
         dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         date = new Date() ;
         todayDate = dateFormat.format(date);
 
         initiallizePieView();
-        onAddProductButtonClick();
-        onChipClick();
+        onAddButtonClick();
         navigation();
     }
 
@@ -70,25 +69,9 @@ public class MainActivity extends AppCompatActivity {
     {
         navigationView.setSelectedItemId(R.id.menu_homePage);
         navigationView.setOnNavigationItemSelectedListener(navigationListener);
-        try {
-            apiConnectionExample();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
-    public void onChipClick()
-    {
-        productChip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), DetailProductActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener navigationListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -96,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch(menuItem.getItemId())
             {
-                case R.id.menu_addProduct:
-                    openCategoriesActivity();
+                case R.id.menu_details:
+                    OpenDailyProducts();
                     overridePendingTransition(0,0);
                     return true;
                 case R.id.menu_history:
@@ -111,20 +94,20 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void onAddProductButtonClick()
+    private void onAddButtonClick()
     {
         addPoductButton = findViewById(R.id.addProduct);
         addPoductButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openCategoriesActivity();
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(intent);
             }
         });
     }
-
-    private void openCategoriesActivity()
+    private void OpenDailyProducts()
     {
-        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+        Intent intent = new Intent(getApplicationContext(), DetailProductActivity.class);
         startActivity(intent);
     }
 
@@ -154,17 +137,16 @@ public class MainActivity extends AppCompatActivity {
         float sumCalories = getSumOfCalories();
         List<PieEntry> valueOfCalories = new ArrayList<>();
         valueOfCalories.add(new PieEntry( sumCalories )); //CaloriesChange.getCountCalories()
-        valueOfCalories.add(new PieEntry(checkCalories() - sumCalories)); //maxCountCalories
+        valueOfCalories.add(new PieEntry(maxCountCalories - sumCalories));
 
         PieDataSet pieDataSet =new PieDataSet(valueOfCalories, "Calories");
         PieData pieData = new PieData(pieDataSet);
-        pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-
+        pieDataSet.setColors(Color.rgb(77, 77, 77),Color.rgb(204, 204, 204));
         piechart.setData(pieData);
-        piechart.setCenterText( String.format("%.0f", sumCalories) + "\nkcal ");
-        piechart.setCenterTextSize(20);
+        piechart.setCenterText( String.format("%.0f", sumCalories)+ "\nkcal ");
+        piechart.setCenterTextSize(30);
         piechart.getDescription().setEnabled(false);
-        piechart.setHoleRadius(80);
+        piechart.setHoleRadius(90);
         piechart.setRotationEnabled(true);
         piechart.setDrawEntryLabels(false); //usuwa opis na wykresie
         piechart.getLegend().setEnabled(false); //usuwa legende
@@ -176,11 +158,4 @@ public class MainActivity extends AppCompatActivity {
         return Math.round(dataBaseHelper.getSumCalories(todayDate));
     }
 
-    private void apiConnectionExample() throws IOException, JSONException {
-        //getFood zwraca produkt o dokładnie takiej samej nazwie jak param jeżeli takie istnieje w bazie
-        System.out.println(new apiMethodsController().getFood("apple"));
-        //getHints zwraca produkty których nazwa zawiera param
-        // Zawiera też produkt z dokładnym dopasowaniem
-        System.out.println(new apiMethodsController().getHints("apple"));
-    }
 }

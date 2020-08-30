@@ -65,7 +65,7 @@ public class SearchActivity extends AppCompatActivity  {
 
 
         navigationView = findViewById(R.id.navigation);
-        navigationView.setSelectedItemId(R.id.menu_addProduct);
+        navigationView.setSelectedItemId(R.id.menu_details);
         navigationView.setOnNavigationItemSelectedListener(navigationListener);
         navigationView.getItemTextAppearanceActive();
     }
@@ -76,7 +76,7 @@ public class SearchActivity extends AppCompatActivity  {
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     switch(menuItem.getItemId())
                     {
-                        case R.id.menu_addProduct:
+                        case R.id.menu_details:
                             return true;
                         case R.id.menu_history:
                             openHistoryActivity();
@@ -136,12 +136,12 @@ public class SearchActivity extends AppCompatActivity  {
                     dataBaseHelper = new DataBaseHelper(context);
                     boolean success = dataBaseHelper.addData(viewModel);
 
-                    alertShow("Produkt został dodany", null, "Ok");
+                    alertShow("The product has been added", null, "Ok");
                     dialog.dismiss();
                 }
                 else
                 {
-                    alertShow("Wprowadź poprawne dane", "Błąd", "Ok");
+                    alertShow("Please enter valid data", "Błąd", "Ok");
                 }
             }
         });
@@ -156,11 +156,11 @@ public class SearchActivity extends AppCompatActivity  {
 
     public float calculateCalories(float count, float calories)
     {
-        return count * (calories/1000);
+        return count * (calories/100);
     }
 
     private void alertShow(String text, String title, String buttonOption){
-        AlertDialog.Builder alert = new AlertDialog.Builder(context); //this
+        AlertDialog.Builder alert = new AlertDialog.Builder(SearchActivity.context);
         alert.setMessage(text);
         alert.setTitle(title);
         alert.setPositiveButton(buttonOption, new DialogInterface.OnClickListener() {

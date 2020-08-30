@@ -20,7 +20,7 @@ public class CategoriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_categories);
 
         navigationView = findViewById(R.id.navigation);
-        navigationView.setSelectedItemId(R.id.menu_addProduct);
+        navigationView.setSelectedItemId(R.id.menu_details);
         navigationView.setOnNavigationItemSelectedListener(navigationListener);
     }
 
@@ -30,7 +30,9 @@ public class CategoriesActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     switch(menuItem.getItemId())
                     {
-                        case R.id.menu_addProduct:
+                        case R.id.menu_details:
+                            OpenDailyProducts();
+                            overridePendingTransition(0,0);
                             return true;
                         case R.id.menu_history:
                             openHistoryPage();
@@ -56,6 +58,11 @@ public class CategoriesActivity extends AppCompatActivity {
     private void openHomePage()
     {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+    private void OpenDailyProducts()
+    {
+        Intent intent = new Intent(getApplicationContext(), DetailProductActivity.class);
         startActivity(intent);
     }
 }
