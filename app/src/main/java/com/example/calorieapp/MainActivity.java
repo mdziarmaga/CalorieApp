@@ -14,6 +14,7 @@ import android.widget.Button;
 import com.example.calorieapp.ApiConnection.apiMethodsController;
 import com.example.calorieapp.DataBase.DataBaseHelper;
 import com.example.calorieapp.History.HistoryActivity;
+import com.example.calorieapp.MyProfile.MyProfile;
 import com.example.calorieapp.SearchPage.SearchActivity;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     PieChart piechart;
     Button addPoductButton;
+    Button myProfile;
     Chip productChip;
     private  final float maxCountCalories = 3500;
     BottomNavigationView navigationView;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         initiallizePieView();
         onAddButtonClick();
+        onMyProfileClick();
         navigation();
     }
 
@@ -93,7 +96,17 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
-
+    private void onMyProfileClick()
+    {
+        myProfile = findViewById(R.id.myProfileButton);
+        myProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyProfile.class);
+                startActivity(intent);
+            }
+        });
+    }
     private void onAddButtonClick()
     {
         addPoductButton = findViewById(R.id.addProduct);

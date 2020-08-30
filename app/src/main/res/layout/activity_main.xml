@@ -68,7 +68,7 @@
         app:srcCompat="@drawable/logo" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/myProfileButton"
         android:layout_width="109dp"
         android:layout_height="33dp"
         android:layout_alignParentTop="true"

@@ -16,6 +16,7 @@
         <activity android:name=".History.HistoryActivity" />
         <activity android:name=".CategoriesActivity" />
         <activity android:name=".SearchPage.SearchActivity" />
+        <activity android:name=".MyProfile.MyProfile" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
