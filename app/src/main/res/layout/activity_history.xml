@@ -19,7 +19,12 @@
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:focusedMonthDateColor="#FFFFFF"
+        android:foregroundTint="#006699"
+        android:selectedWeekBackgroundColor="#006699"
+        android:weekNumberColor="#006699"
+        android:weekSeparatorLineColor="#006699" />
 
 
 </RelativeLayout>
