@@ -26,12 +26,12 @@
     <ListView
         android:id="@+id/product_list"
         android:layout_width="wrap_content"
-        android:layout_height="383dp"
+        android:layout_height="357dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="21dp"
-        android:layout_marginTop="61dp"
+        android:layout_marginTop="87dp"
         android:layout_marginEnd="28dp">
 
 
@@ -39,35 +39,41 @@
 
     <Button
         android:id="@+id/button_Edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
         android:layout_above="@+id/navigation"
         android:layout_alignStart="@+id/product_list"
         android:layout_marginStart="3dp"
         android:layout_marginBottom="12dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/buttom_look"
         android:text="Edit" />
 
     <Button
         android:id="@+id/button_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
         android:layout_above="@+id/navigation"
         android:layout_marginStart="18dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="13dp"
         android:layout_toStartOf="@+id/button_detail"
         android:layout_toEndOf="@+id/button_Edit"
+        android:background="@drawable/buttom_look"
+        android:textColor="@android:color/white"
         android:text="Delete" />
 
     <Button
         android:id="@+id/button_detail"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
         android:layout_above="@+id/navigation"
         android:layout_alignEnd="@+id/product_list"
         android:layout_marginStart="12dp"
+        android:background="@drawable/buttom_look"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="14dp"
+        android:textColor="@android:color/white"
         android:text="Details" />
 
     <TextView
@@ -76,9 +82,21 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/product_list"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="2dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
-        android:textSize="20dp" />
+        android:layout_marginEnd="36dp"
+        android:bufferType="normal"
+        android:ellipsize="none"
+        android:overScrollMode="never"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:background="@drawable/buttom_look"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textIsSelectable="false"
+        android:textSize="25dp"
+        android:visibility="visible" />
 
 </RelativeLayout>

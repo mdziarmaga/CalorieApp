@@ -1,9 +1,12 @@
 package com.example.calorieapp.History;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.CalendarView;
@@ -28,12 +31,14 @@ public class HistoryActivity extends AppCompatActivity {
     String choosenDate;
     ListView listView;
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         calendar = findViewById(R.id.calendarView);
 
+        calendar.setFocusedMonthDateColor(Color.RED);
         listView = findViewById(R.id.list);
 
         dataBaseHelper = new DataBaseHelper(HistoryActivity.this);
