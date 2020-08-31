@@ -63,7 +63,7 @@ public class DetailProductActivity extends AppCompatActivity {
         date = new Date() ;
         todayDate = dateFormat.format(date);
 
-        todayDateTextView.setText("Dzisiaj " + todayDate );
+        todayDateTextView.setText("Today " + todayDate );
         navigationView = findViewById(R.id.navigation);
         addDataToList();
 
@@ -143,7 +143,7 @@ public class DetailProductActivity extends AppCompatActivity {
                 if (checkedProduct != 0) {
                     dataBaseHelper.deleteData(clickedProduct);
                     refreshList(dataBaseHelper);
-                    Toast.makeText(DetailProductActivity.this, "Produkt usuniety", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailProductActivity.this, "Product deleted", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -157,10 +157,10 @@ public class DetailProductActivity extends AppCompatActivity {
                 if (checkedProduct != 0) {
                     final AlertDialog.Builder alertDialog = new AlertDialog.Builder(DetailProductActivity.this);
                     final EditText editText = new EditText(getApplicationContext());
-                    alertDialog.setTitle("Edycja produktu ");
-                    alertDialog.setMessage("\nWpisz nową wagę produktu");
+                    alertDialog.setTitle("  Edit ");
+                    alertDialog.setMessage("\nNew weight");
                     alertDialog.setView(editText);
-                    alertDialog.setPositiveButton("Zapisz", new DialogInterface.OnClickListener() {
+                    alertDialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -174,14 +174,14 @@ public class DetailProductActivity extends AppCompatActivity {
                                 boolean isUpdated = dataBaseHelper.upDate(clickedProduct);
                                 if (isUpdated == true) {
                                     refreshList(dataBaseHelper);
-                                    Toast.makeText(DetailProductActivity.this, "Produkt został zaktualizowany", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(DetailProductActivity.this, "Product updated", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
-                                Toast.makeText(DetailProductActivity.this, "Uzupełnij dane", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DetailProductActivity.this, "\n" + "Complete the data", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-                    alertDialog.setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
+                    alertDialog.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                         }

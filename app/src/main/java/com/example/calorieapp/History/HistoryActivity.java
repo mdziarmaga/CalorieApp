@@ -44,7 +44,6 @@ public class HistoryActivity extends AppCompatActivity {
         dataBaseHelper = new DataBaseHelper(HistoryActivity.this);
 
         calendarEvent();
-        //showDetail();
 
         navigationView = findViewById(R.id.navigation);
         navigationView.setSelectedItemId(R.id.menu_history);

@@ -104,18 +104,19 @@ public class MyProfile extends AppCompatActivity {
     }
     private void setProfile()
     {
-//        try {
-            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            int calories_demand = pref.getInt("caloricDemand",0);
-            int genderPosition = pref.getInt("gender",0);
-            String growth = String.valueOf(pref.getInt("growth",0));
-            String weight = String.valueOf(pref.getInt("weight",0));
-            int goalPosition = pref.getInt("goal",0);
-            genderSpinner.setSelection(genderPosition);
-            growthEdit.setText(growth);
-            weightEdit.setText(weight);
-            goalSpinner.setSelection(goalPosition);
-
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        int calories = pref.getInt("caloricDemand",0 );
+         if(calories!=0) {
+             int calories_demand = pref.getInt("caloricDemand",0 );
+             int genderPosition = pref.getInt("gender", 0);
+             String growth = String.valueOf(pref.getInt("growth", 0));
+             String weight = String.valueOf(pref.getInt("weight", 0));
+             int goalPosition = pref.getInt("goal", 0);
+             genderSpinner.setSelection(genderPosition);
+             growthEdit.setText(growth);
+             weightEdit.setText(weight);
+             goalSpinner.setSelection(goalPosition);
+         }
 //        }
 //        catch (Exception x)
 //        {

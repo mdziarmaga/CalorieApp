@@ -101,7 +101,7 @@ public class ViewModel {
     @NonNull
     @Override
     public String toString() {
-        return String.format("%s \nilość kalorii %.0f kcal\nwaga %.0f g ", productName, sumCalories, weight);
+        return String.format("%s \namount of calories %.0f kcal\nweight %.0f g ", productName, sumCalories, weight);
 
     }
 }

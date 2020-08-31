@@ -36,7 +36,7 @@ public class ListActivity extends AppCompatActivity {
 
         float sumOfCalories = getSumOfCalories();
         addDataToList();
-        text.setText(" Ilość kalorii w dniu " + date + "\n wynosi " + String.format("%.0f", sumOfCalories)  );
+        text.setText(" Calories on day " + date + "\n is " + String.format("%.0f", sumOfCalories)  );
     }
 
     public float getSumOfCalories()
@@ -50,8 +50,8 @@ public class ListActivity extends AppCompatActivity {
         if(productList.isEmpty())
         {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.setMessage("\nBrak danych w bazie");
-            alert.setTitle("Informacja");
+            alert.setMessage("\nNo data");
+            alert.setTitle("Information");
             alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

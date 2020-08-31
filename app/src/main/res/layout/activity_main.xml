@@ -7,6 +7,23 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/addProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_below="@+id/pieView"
+        android:layout_alignStart="@+id/pieView"
+        android:layout_alignEnd="@+id/pieView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="35dp"
+        android:background="@drawable/add_button"
+        android:maxHeight="75dp"
+        android:minHeight="60dp"
+        android:text="Add product"
+        android:textColor="#0099CC" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
@@ -32,31 +49,16 @@
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieView"
-        android:layout_width="340dp"
-        android:layout_height="385dp"
+        android:layout_width="wrap_content"
+        android:layout_height="332dp"
+        android:layout_below="@+id/myProfileButton"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
         android:layout_marginStart="38dp"
-        android:layout_marginTop="123dp"
-        android:layout_marginEnd="31dp"></com.github.mikephil.charting.charts.PieChart>
-
-    <Button
-        android:id="@+id/addProduct"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_below="@+id/pieView"
-        android:layout_alignStart="@+id/pieView"
-        android:layout_alignEnd="@+id/pieView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="-2dp"
-
-        android:layout_marginEnd="40dp"
-        android:background="@drawable/add_button"
-        android:text="Add product"
-        android:textColor="#0099CC" />
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="46dp"
+        android:minHeight="65dp"></com.github.mikephil.charting.charts.PieChart>
 
     <ImageView
         android:id="@+id/imageView"
@@ -64,8 +66,10 @@
         android:layout_height="153dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="-34dp"
+        android:layout_marginEnd="75dp"
+        android:layout_toStartOf="@+id/myProfileButton"
         app:srcCompat="@drawable/logo" />
 
     <Button
@@ -75,7 +79,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="46dp"
-        android:layout_marginEnd="46dp"
+        android:layout_marginEnd="32dp"
         android:background="#0099CC"
         android:text="My profile"
         android:textColor="#ffff" />

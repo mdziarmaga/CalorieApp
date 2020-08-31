@@ -16,7 +16,5 @@
         android:id="@+id/menu_details"
         android:enabled="true"
         android:icon="@drawable/ic_daily"
-        android:title="Today's products " />
-
-
+        android:title="Today's food " />
 </menu>
