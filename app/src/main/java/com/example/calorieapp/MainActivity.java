@@ -1,17 +1,20 @@
 package com.example.calorieapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.calorieapp.ApiConnection.apiMethodsController;
 import com.example.calorieapp.DataBase.DataBaseHelper;
 import com.example.calorieapp.History.HistoryActivity;
 import com.example.calorieapp.MyProfile.MyProfile;
@@ -20,13 +23,9 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     Button addPoductButton;
     Button myProfile;
     Chip productChip;
-    private  final float maxCountCalories = 3500;
+    private int maxCountCalories ;
     BottomNavigationView navigationView;
     DataBaseHelper dataBaseHelper;
     SimpleDateFormat dateFormat ;
@@ -62,10 +61,17 @@ public class MainActivity extends AppCompatActivity {
         date = new Date() ;
         todayDate = dateFormat.format(date);
 
+
+
         initiallizePieView();
         onAddButtonClick();
         onMyProfileClick();
         navigation();
+        if(getCaloricDemand()==0)
+        {
+            showCreateProfileDialog();
+        }
+
     }
 
     public void navigation()
@@ -113,10 +119,43 @@ public class MainActivity extends AppCompatActivity {
         addPoductButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                startActivity(intent);
+                if(getCaloricDemand()==0)
+                {
+                    showCreateProfileDialog();
+                }
+                else
+                {
+                    Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                    startActivity(intent);
+                }
             }
         });
+    }
+    private void showCreateProfileDialog()
+    {
+        final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                .setPositiveButton("My profile", null)
+                .setTitle("My profile")
+                .setMessage("Welcome in CaloriesCounter,\nbefore you'll start using app, create your profile")
+                .create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+
+                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getApplicationContext(), MyProfile.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+        });
+        dialog.show();
     }
     private void OpenDailyProducts()
     {
@@ -144,19 +183,25 @@ public class MainActivity extends AppCompatActivity {
             return maxCountCalories;
         }
     }
-
+    private int getCaloricDemand()
+    {
+        SharedPreferences pref =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        maxCountCalories = pref.getInt("caloricDemand",0);
+        return maxCountCalories;
+    }
     public void initiallizePieView()
     {
         float sumCalories = getSumOfCalories();
         List<PieEntry> valueOfCalories = new ArrayList<>();
         valueOfCalories.add(new PieEntry( sumCalories )); //CaloriesChange.getCountCalories()
-        valueOfCalories.add(new PieEntry(maxCountCalories - sumCalories));
+        valueOfCalories.add(new PieEntry(getCaloricDemand() - sumCalories));
 
         PieDataSet pieDataSet =new PieDataSet(valueOfCalories, "Calories");
         PieData pieData = new PieData(pieDataSet);
         pieDataSet.setColors(Color.rgb(77, 77, 77),Color.rgb(204, 204, 204));
         piechart.setData(pieData);
-        piechart.setCenterText( String.format("%.0f", sumCalories)+ "\nkcal ");
+        piechart.setCenterText( String.format("%.0f", sumCalories)+ "/"+getCaloricDemand()+"\nkcal ");
         piechart.setCenterTextSize(30);
         piechart.getDescription().setEnabled(false);
         piechart.setHoleRadius(90);

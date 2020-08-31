@@ -1,25 +1,27 @@
 package com.example.calorieapp.MyProfile;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.calorieapp.MainActivity;
 import com.example.calorieapp.R;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,7 @@ public class MyProfile extends AppCompatActivity {
     EditText growthEdit;
     EditText weightEdit;
     TextView caloriesView;
+    Button saveButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,8 @@ public class MyProfile extends AppCompatActivity {
         growthEdit = findViewById(R.id.growthEdit);
         weightEdit = findViewById(R.id.weightEdit);
         caloriesView = findViewById(R.id.caloriesView);
+        saveButton = findViewById(R.id.saveButton);
+        setProfile();
         List<String> genderStrings = new ArrayList<>();
         genderStrings.add("Male");
         genderStrings.add("Female");
@@ -58,6 +63,64 @@ public class MyProfile extends AppCompatActivity {
         ArrayAdapter<String> goalAdopter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,goalStrings);
         goalSpinner.setAdapter(goalAdopter);
         setCaloricRequirement();
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if(caloriesView.getText().length()!=0)
+                {
+                int caloric_demand = Integer.parseInt( (caloriesView.getText()).toString());
+                int gender = genderSpinner.getSelectedItemPosition();
+                int growth = Integer.parseInt(growthEdit.getText().toString());
+                    int weight = Integer.parseInt(weightEdit.getText().toString());
+                    int goal = goalSpinner.getSelectedItemPosition();
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    pref.edit().putInt("caloricDemand",caloric_demand).apply();
+                    pref.edit().putInt("gender",gender).apply();
+                    pref.edit().putInt("growth",growth).apply();
+                    pref.edit().putInt("weight",weight).apply();
+                    pref.edit().putInt("goal",goal).apply();
+
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+                else
+                {
+                    AlertDialog alertDialog = new AlertDialog.Builder(MyProfile.this).create();
+                    alertDialog.setTitle("Alert");
+                    alertDialog.setMessage("Fulfil all fields");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+            }
+        });
+
+    }
+    private void setProfile()
+    {
+//        try {
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            int calories_demand = pref.getInt("caloricDemand",0);
+            int genderPosition = pref.getInt("gender",0);
+            String growth = String.valueOf(pref.getInt("growth",0));
+            String weight = String.valueOf(pref.getInt("weight",0));
+            int goalPosition = pref.getInt("goal",0);
+            genderSpinner.setSelection(genderPosition);
+            growthEdit.setText(growth);
+            weightEdit.setText(weight);
+            goalSpinner.setSelection(goalPosition);
+
+//        }
+//        catch (Exception x)
+//        {
+//
+//        }
     }
     private void setCaloricRequirement()
     {
@@ -69,7 +132,7 @@ public class MyProfile extends AppCompatActivity {
                     int growth = Integer.parseInt(String.valueOf(growthEdit.getText()));
                     int weight =Integer.parseInt(String.valueOf(weightEdit.getText()));
                     String calories = String.valueOf(calculateBMR(weight,growth));
-                    caloriesView.setText(calories+"kcal");
+                    caloriesView.setText(calories);
                 }
             }
 
@@ -86,7 +149,7 @@ public class MyProfile extends AppCompatActivity {
                     int growth = Integer.parseInt(String.valueOf(growthEdit.getText()));
                     int weight =Integer.parseInt(String.valueOf(weightEdit.getText()));
                     String calories = String.valueOf(calculateBMR(weight,growth));
-                    caloriesView.setText(calories+"kcal");
+                    caloriesView.setText(calories);
                 }
             }
 
@@ -114,7 +177,7 @@ public class MyProfile extends AppCompatActivity {
                     int growth = Integer.parseInt(String.valueOf(growthEdit.getText()));
                     int weight =Integer.parseInt(String.valueOf(weightEdit.getText()));
                     String calories = String.valueOf(calculateBMR(weight,growth));
-                    caloriesView.setText(calories+"kcal");
+                    caloriesView.setText(calories);
                 }
             }
         });
@@ -122,12 +185,10 @@ public class MyProfile extends AppCompatActivity {
         weightEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
@@ -137,7 +198,7 @@ public class MyProfile extends AppCompatActivity {
                     int growth = Integer.parseInt(String.valueOf(growthEdit.getText()));
                     int weight =Integer.parseInt(String.valueOf(weightEdit.getText()));
                     String calories = String.valueOf(calculateBMR(weight,growth));
-                    caloriesView.setText(calories+"kcal");
+                    caloriesView.setText(calories);
                 }
             }
         });
