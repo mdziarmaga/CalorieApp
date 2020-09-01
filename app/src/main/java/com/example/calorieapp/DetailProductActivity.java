@@ -81,7 +81,7 @@ public class DetailProductActivity extends AppCompatActivity {
     }
     public void listEvent()
     {
-        list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        list.setChoiceMode(ListView.CHOICE_MODE_SINGLE) ; //CHOICE_MODE_SINGLE
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -194,7 +194,7 @@ public class DetailProductActivity extends AppCompatActivity {
 
     private void refreshList(DataBaseHelper dataBaseHelper)
     {
-        productAdapter = new ArrayAdapter<ViewModel>(getApplicationContext(), android.R.layout.simple_list_item_activated_1 , dataBaseHelper.getData(todayDate)); //getall() //simple_list_item_activated_1 simple_list_item_1
+        productAdapter = new ArrayAdapter<ViewModel>(getApplicationContext(), android.R.layout.simple_selectable_list_item , dataBaseHelper.getData(todayDate)); //getall() //simple_list_item_activated_1 simple_list_item_1
         list.setAdapter(productAdapter);
     }
 

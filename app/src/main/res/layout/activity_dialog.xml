@@ -34,7 +34,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="129dp"
         android:layout_marginTop="65dp"
-        android:hint="ilość" />
+        android:hint="amount" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,6 +58,7 @@
         android:layout_marginEnd="11dp"
         android:background="#00ace6"
         android:hint="Add"
+        android:layout_marginBottom="15dp"
         android:textColor="#ffffff" />
 
     <Button
@@ -72,6 +73,7 @@
         android:layout_marginEnd="150dp"
         android:background="#00ace6"
         android:hint="Cancel"
+        android:layout_marginBottom="15dp"
         android:textColor="#ffffff" />
 
 </RelativeLayout>
