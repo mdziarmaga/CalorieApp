@@ -51,9 +51,7 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         dataBaseHelper = new DataBaseHelper(this);
-
         piechart = findViewById(R.id.pieView);
         navigationView = findViewById(R.id.navigation);
 
@@ -171,16 +169,16 @@ public class MainActivity extends AppCompatActivity {
 
     private float checkCalories()
     {
-        if(dataBaseHelper.getSumCalories(todayDate) > maxCountCalories)
+        if(dataBaseHelper.getSumCalories(todayDate) > getCaloricDemand())
         {
             final float newMaxCountCalories;
-            float different = dataBaseHelper.getSumCalories(todayDate) - maxCountCalories;
-            newMaxCountCalories = maxCountCalories + different +500;
+            float different = dataBaseHelper.getSumCalories(todayDate) - getCaloricDemand();
+            newMaxCountCalories = getCaloricDemand() + different +500;
             return newMaxCountCalories;
         }
         else
         {
-            return maxCountCalories;
+            return getCaloricDemand();
         }
     }
     private int getCaloricDemand()
@@ -195,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         float sumCalories = getSumOfCalories();
         List<PieEntry> valueOfCalories = new ArrayList<>();
         valueOfCalories.add(new PieEntry( sumCalories )); //CaloriesChange.getCountCalories()
-        valueOfCalories.add(new PieEntry(getCaloricDemand() - sumCalories));
+        valueOfCalories.add(new PieEntry(checkCalories() - sumCalories));
 
         PieDataSet pieDataSet =new PieDataSet(valueOfCalories, "Calories");
         PieData pieData = new PieData(pieDataSet);

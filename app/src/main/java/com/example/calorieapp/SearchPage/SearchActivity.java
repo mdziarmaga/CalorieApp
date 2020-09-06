@@ -38,8 +38,10 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class SearchActivity extends AppCompatActivity  {
@@ -219,18 +221,32 @@ public class SearchActivity extends AppCompatActivity  {
 
                 @Override
                 public boolean onQueryTextChange(String s) {
-                    if (TextUtils.isEmpty(s)) {
-                    } else {
+//                    if (TextUtils.isEmpty(s)) {
+//                    }
+//                    else {
+//                        set_foodList(s);
+//
+//                    }
+                    if(s.length()==0)
+                    {
+
+                    }
+                   else
+                    {
                         set_foodList(s);
                     }
-                    return true;
+                 return true;
                 }
             });
 
 return true;
     }
+
+
+
+    List<Food_> food_list =null;
     public void set_foodList(String rand)
-    {List<Food_> food_list = null;
+    {
         try {
             food_list = new apiMethodsController().getHints(rand);
         } catch (IOException e) {

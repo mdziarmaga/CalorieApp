@@ -21,7 +21,6 @@ import okhttp3.OkHttpClient;
 
 public class getFood {
     public static List<Food> getfood(String param) throws IOException {
-        OkHttpClient client = new OkHttpClient();
         List<Food> foodList = new ArrayList<>();
         Example example = null;
         HttpUrl.Builder urlBuilder
@@ -49,7 +48,6 @@ public class getFood {
         return foodList;
     }
     public static List<Food_> getHints(String param) throws IOException {
-        OkHttpClient client = new OkHttpClient();
         List<Food_> foodList = null;
         List<Hint> hintList = null;
         Example example = null;
